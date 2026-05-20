@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="dark bg-black">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Preconnect to font origin (high priority) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Preload hero images para LCP — download começa ANTES do JS -->
+  <link rel="preload" as="image" type="image/webp" href="/hero-m.webp"
+    media="(max-width: 767px)" fetchpriority="high" />
+  <link rel="preload" as="image" type="image/webp" href="/hero-c.webp"
+    media="(min-width: 768px)" fetchpriority="high" />
+
+  <!--
+    FONTES: carregamento non-render-blocking.
+    Usa preload + onload trick para evitar bloquear o FCP.
+    O fallback system-ui aparece imediatamente, Inter aparece quando estiver pronto.
+  -->
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap"
+    media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" />
+  </noscript>
+
+  <meta name="theme-color" content="#000000" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="Ballers085" />
+  <meta name="description"
+    content="Ballers085 é a plataforma definitiva para treinos de basquete, exercícios e tutoriais guiados. Eleve o seu jogo com rotinas feitas para academia, casa e quadra." />
+  <meta name="keywords"
+    content="basquete, treinos de basquete, basquetebol, exercícios basquete, drible, arremesso, ballers085, ballers" />
+  <meta name="author" content="Ballers085" />
+  <meta property="og:title" content="Ballers085 - Plataforma de Treinos de Basquete" />
+  <meta property="og:description"
+    content="Eleve seu jogo com treinos estruturados de basquete para fazer em casa, na academia ou na quadra." />
+  <meta property="og:type" content="website" />
+
+  <title>Ballers085 - Treinos de Basquete</title>
+
+  <!-- Critical CSS inline: garante que o body preto aparece instantaneamente (evita flash branco) -->
+  <style>
+    body{background:#000;color:#fff;margin:0}
+    #root{background:#000;min-height:100vh}
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <!-- AdSense: carregado após tudo (não impacta métricas) -->
+  <script defer src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3951534017054303"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

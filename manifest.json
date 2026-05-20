@@ -1,0 +1,23 @@
+{
+  "name": "Site de treinos de basquete - Ballers085",
+  "short_name": "Ballers085",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "description": "Aplicativo de treinos e desenvolvimento de habilidades para jogadores de basquete da Ballers085.",
+  "icons": [
+    {
+      "src": "/logo212.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

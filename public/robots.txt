@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Allow: /about
+Allow: /terms
+Allow: /privacy
+Sitemap: https://ballers085.vercel.app/sitemap.xml
