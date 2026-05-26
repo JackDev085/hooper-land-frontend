@@ -42,6 +42,47 @@ export default function ExercisePlayer() {
   const listRef = useRef(null);
   const scrubberRef = useRef(null);
 
+  // Auto-hide controls state & logic
+  const [showControls, setShowControls] = useState(true);
+  const controlsTimeoutRef = useRef(null);
+
+  const resetControlsTimeout = useCallback(() => {
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+    if (isPlaying) {
+      controlsTimeoutRef.current = setTimeout(() => {
+        setShowControls(false);
+      }, 3000);
+    }
+  }, [isPlaying]);
+
+  const triggerShowControls = useCallback(() => {
+    setShowControls(true);
+    resetControlsTimeout();
+  }, [resetControlsTimeout]);
+
+  // Handle controls visibility when isPlaying changes
+  useEffect(() => {
+    if (isPlaying) {
+      resetControlsTimeout();
+    } else {
+      setShowControls(true);
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
+    }
+  }, [isPlaying, resetControlsTimeout]);
+
+  // Clean up timers on unmount
+  useEffect(() => {
+    return () => {
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const workout = queryParams.get("treino");
@@ -149,6 +190,38 @@ export default function ExercisePlayer() {
     if (videoRef.current.paused) {
       videoRef.current.play().catch(() => { });
       setIsPlaying(true);
+    }
+  };
+
+  const handleVideoContainerClick = (e) => {
+    // If clicking on control buttons or overlays, don't toggle play/pause via container click
+    if (
+      e.target.closest(".exercise-player-ctrl-btn") ||
+      e.target.closest(".exercise-player-unmute-banner") ||
+      e.target.closest(".exercise-player-countdown-overlay")
+    ) {
+      return;
+    }
+    if (!showControls) {
+      triggerShowControls();
+    } else {
+      handlePlayPause();
+      triggerShowControls();
+    }
+  };
+
+  const handleMouseMove = () => {
+    triggerShowControls();
+  };
+
+  const handleMouseLeave = () => {
+    if (isPlaying) {
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
+      }
+      controlsTimeoutRef.current = setTimeout(() => {
+        setShowControls(false);
+      }, 1000);
     }
   };
 
@@ -290,7 +363,12 @@ export default function ExercisePlayer() {
         <>
           {/* ===== STICKY VIDEO PLAYER ===== */}
           <div className="exercise-player-sticky">
-            <div className="exercise-player-video-wrapper">
+            <div
+              className="exercise-player-video-wrapper"
+              onClick={handleVideoContainerClick}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+            >
               {activeExercise ? (
                 <video
                   ref={videoRef}
@@ -319,7 +397,7 @@ export default function ExercisePlayer() {
               )}
 
               {/* Unmute banner overlay */}
-              {showUnmuteBanner && isMuted && activeExercise && (
+              {showUnmuteBanner && isMuted && activeExercise && countdown === null && (
                 <button
                   className="exercise-player-unmute-banner"
                   onClick={handleUnmute}
@@ -380,8 +458,8 @@ export default function ExercisePlayer() {
               )}
 
               {/* Custom controls overlay */}
-              {activeExercise && (
-                <div className="exercise-player-controls">
+              {activeExercise && countdown === null && (
+                <div className={`exercise-player-controls ${showControls ? "visible" : ""}`}>
                   <button
                     onClick={handlePrev}
                     disabled={activeIndex === 0}
