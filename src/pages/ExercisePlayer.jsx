@@ -535,9 +535,12 @@ export default function ExercisePlayer() {
                     {activeExercise.name}
                   </span>
                 </div>
+                {/*
+
                 <span className="exercise-player-now-reps">
                   {activeExercise.reps}
                 </span>
+                */}
               </div>
             )}
 
