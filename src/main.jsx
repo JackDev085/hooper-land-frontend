@@ -1,11 +1,12 @@
 import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 // Componentes essenciais (carregados sync — acima do fold)
 import App from "./App.jsx";
 import AuthProvider from "./context/AuthContext.jsx";
 import Home from "./pages/Home.jsx";
+import ScrollToTop from "./components/utils/ScrollToTop";
 
 // Lazy load de todas as páginas (code splitting automático)
 const Auth = lazy(() => import("./pages/Auth.jsx"));
@@ -18,6 +19,7 @@ const Donate = lazy(() => import("./pages/Donate.jsx"));
 const About = lazy(() => import("./pages/About.jsx"));
 const Privacy = lazy(() => import("./pages/Privacy.jsx"));
 const Terms = lazy(() => import("./pages/Terms.jsx"));
+const ExercisePlayer = lazy(() => import("./pages/ExercisePlayer.jsx"));
 
 // Fallback mínimo para Suspense (CSS spinner, sem GIF pesado)
 function PageLoader() {
@@ -28,8 +30,21 @@ function PageLoader() {
   );
 }
 
+// Layout imersivo — sem Navbar, Footer ou BottomNav
+function PlayerLayout() {
+  return (
+    <>
+      <ScrollToTop />
+      <main className="bg-black min-h-screen">
+        <Outlet />
+      </main>
+    </>
+  );
+}
+
 // Configure as rotas
 const router = createBrowserRouter([
+  // Layout principal (com Navbar + Footer + BottomNav)
   {
     path: "/",
     element: <App />,
@@ -120,6 +135,21 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <Terms />
+          </Suspense>
+        ),
+      },
+    ],
+  },
+  // Layout imersivo (sem Navbar/Footer — experiência de player)
+  {
+    path: "/",
+    element: <PlayerLayout />,
+    children: [
+      {
+        path: "exercise-player",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ExercisePlayer />
           </Suspense>
         ),
       },
