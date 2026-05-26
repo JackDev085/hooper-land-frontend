@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import WorkoutCard from "../components/ui/WorkoutCard";
+import { SkeletonCard } from "../components/ui/Skeleton";
 import api from "../services/api";
 
-export default function WorkoutHandler({ category }) {
+export default function WorkoutHandler({ category, searchQuery }) {
   const [workouts, setWorkouts] = useState([]);
   const [filteredWorkouts, setFilteredWorkouts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,25 +32,33 @@ export default function WorkoutHandler({ category }) {
   }, []);
 
   useEffect(() => {
-    // Filtra os treinos com base na categoria ativa
-    const filtered = workouts.filter(
-      (workout) => workout.category === category
-    );
+    // Filtra os treinos com base na categoria ativa e busca
+    const filtered = workouts.filter((workout) => {
+      const matchesCategory = workout.category === category;
+      const matchesSearch = searchQuery
+        ? workout.name.toLowerCase().includes(searchQuery.toLowerCase())
+        : true;
+      return matchesCategory && matchesSearch;
+    });
     setFilteredWorkouts(filtered);
-  }, [category, workouts]);
+  }, [category, workouts, searchQuery]);
 
   return (
     <>
       {loading ? (
-        <div className="flex justify-center py-12 col-span-full">
-          <div className="loading-spinner" aria-label="Carregando treinos..." />
-        </div>
+        <>
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+        </>
       ) : filteredWorkouts.length > 0 ? (
         filteredWorkouts.map((workout) => (
           <WorkoutCard key={workout.id} workout={workout} />
         ))
       ) : (
-        <span className="sem_treino">❌ Sem treinos para essa categoria</span>
+        <span className="sem_treino col-span-full text-center text-gray-500 py-12">
+          ❌ Sem treinos para essa categoria
+        </span>
       )}
     </>
   );

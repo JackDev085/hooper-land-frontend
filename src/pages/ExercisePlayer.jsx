@@ -419,8 +419,8 @@ export default function ExercisePlayer() {
               )}
             </div>
 
-            {/* Video duration scrubber bar */}
-            {activeExercise && (
+            {/* Video duration scrubber bar — hidden during countdown */}
+            {activeExercise && countdown === null && (
               <div className="exercise-player-scrubber-container">
                 <span className="exercise-player-time">{formatTime(videoCurrentTime)}</span>
                 <div
@@ -445,8 +445,8 @@ export default function ExercisePlayer() {
               </div>
             )}
 
-            {/* Now playing info bar */}
-            {activeExercise && (
+            {/* Now playing info bar — hidden during countdown */}
+            {activeExercise && countdown === null && (
               <div className="exercise-player-now-playing">
                 <div className="exercise-player-now-info">
                   <span className="exercise-player-now-label">

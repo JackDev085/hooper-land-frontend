@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { Link } from "react-router-dom";
-import { MapPin, Calendar, ChevronRight } from "lucide-react";
+import { MapPin, Calendar, ChevronRight, MessageCircle } from "lucide-react";
 import { SkeletonGameCard } from "../components/ui/Skeleton";
 
 export default function Games() {
@@ -37,13 +37,32 @@ export default function Games() {
     <div className="min-h-screen bg-black text-white px-6 py-20 pt-24">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-            Rachas <span className="text-orange-500">Disponíveis</span>
-          </h1>
-          <p className="text-gray-400 text-lg">
-            Encontre um local para jogar perto de você
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+              Rachas <span className="text-orange-500">Disponíveis</span>
+            </h1>
+            <p className="text-gray-400 text-lg">
+              Encontre um local para jogar perto de você
+            </p>
+          </div>
+          <a
+            href="https://wa.me/5585986667136?text=Gostaria%20de%20sugerir%20um%20novo%20local%20de%20racha..."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              inline-flex items-center justify-center gap-2
+              bg-green-600 hover:bg-green-500 
+              text-white px-6 py-3.5 rounded-xl 
+              font-bold tracking-wide
+              transition-all duration-300
+              hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:-translate-y-0.5
+              self-start sm:self-auto
+            "
+          >
+            <MessageCircle size={20} />
+            Sugerir novo local
+          </a>
         </div>
 
         {/* Loading state */}
@@ -155,9 +174,25 @@ export default function Games() {
             <h3 className="text-xl font-bold text-gray-400 mb-2">
               Nenhum racha encontrado
             </h3>
-            <p className="text-gray-500">
+            <p className="text-gray-500 mb-6">
               Em breve teremos novos locais disponíveis.
             </p>
+            <a
+              href="https://wa.me/5585988888888?text=Gostaria%20de%20sugerir%20um%20novo%20local%20de%20racha..."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                inline-flex items-center justify-center gap-2
+                bg-green-600 hover:bg-green-500 
+                text-white px-6 py-3.5 rounded-xl 
+                font-bold tracking-wide
+                transition-all duration-300
+                hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:-translate-y-0.5
+              "
+            >
+              <MessageCircle size={20} />
+              Sugerir novo local
+            </a>
           </div>
         )}
       </div>

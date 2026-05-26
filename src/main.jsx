@@ -74,13 +74,14 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
-      {
+      {/*
         path: "exercises",
         element: (
           <Suspense fallback={<PageLoader />}>
             <Exercises />
           </Suspense>
         ),
+        */
       },
       {
         path: "games",
@@ -146,7 +147,7 @@ const router = createBrowserRouter([
     element: <PlayerLayout />,
     children: [
       {
-        path: "exercise-player",
+        path: "exercises",
         element: (
           <Suspense fallback={<PageLoader />}>
             <ExercisePlayer />
