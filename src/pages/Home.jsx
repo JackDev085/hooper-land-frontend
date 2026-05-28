@@ -14,25 +14,25 @@ export default function Home() {
   // Categorias com ícones SVG em vez de imagens pesadas
   const categories = [
     {
-      name: "Casa",
+      name: "Em casa",
       icon: HomeIcon,
       gradient: "from-blue-600 to-blue-800",
       description: "Exercícios simples, apenas com o peso corporal.",
     },
     {
-      name: "Academia",
+      name: "Na academia",
       icon: Dumbbell,
       gradient: "from-gray-600 to-gray-800",
       description: "Exercícios com equipamentos de academia.",
     },
     {
-      name: "Quadra",
+      name: "Na quadra",
       icon: MapPin,
       gradient: "from-orange-600 to-orange-800",
       description: "Práticas na quadra.",
     },
     {
-      name: "Livre",
+      name: "Ao ar Livre",
       icon: TreeDeciduous,
       gradient: "from-green-600 to-green-800",
       description: "Exercícios ao ar livre.",
@@ -42,7 +42,7 @@ export default function Home() {
   return (
     <div className="w-full min-h-screen bg-black text-white">
       {/* HERO SECTION */}
-      <section className="relative w-full min-h-[100dvh] flex items-center justify-center overflow-hidden">
+      <section className="relative w-full h-dvh flex items-center justify-center overflow-hidden">
         {/* Background image with parallax effect */}
         <picture className="absolute inset-0 w-full h-full">
           <source media="(min-width: 768px)" srcSet="/hero-c.webp" type="image/webp" />
@@ -77,10 +77,16 @@ export default function Home() {
               Eleve Seu <span className="text-gradient">Jogo</span>
             </h1>
 
-            <p className="text-lg md:text-xl max-w-2xl mx-auto mb-10 text-gray-300 leading-relaxed">
-              Treinos para quem não tem ideia do que treinar. Essa é a premissa
+
+
+            <video className="rounded-md mb-4 md:hidden" autoPlay loop muted playsInline>
+              <source fetchPriority="high" src="hero.webm" type="video/webm" />
+            </video>
+
+            <p className="text-lg italic md:text-xl max-w-2xl mx-auto mb-10 text-gray-300 leading-relaxed">
+              "Treinos para quem não tem ideia do que treinar. Essa é a premissa
               do{" "}
-              <span className="text-orange-500 font-semibold">Ballers085</span>
+              <span className="text-orange-500 font-semibold">Ballers085"</span>
               .
             </p>
 
@@ -138,12 +144,13 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* Scroll indicator 
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
           <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2">
             <div className="w-1 h-2 bg-white/50 rounded-full animate-pulse" />
           </div>
         </div>
+        */}
       </section>
 
       {/* SOBRE SECTION */}
@@ -154,22 +161,21 @@ export default function Home() {
             <span className="text-orange-500">que Treinar</span>
           </h2>
           <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-            A Ballers085 nasceu da paixão pelo basquete e do desejo de
-            democratizar o acesso a treinos variados da modalidade. Sabemos que
+            Sabemos que
             o maior desafio de muitos jogadores amadores e de rua não é a falta
             de esforço, mas sim a ausência de um direcionamento.
-            Por não saberem exatamente quais os melhores exercícios ou a quantia
+            Não saber quais os melhores exercícios ou a quantia
             ideal de repetições, muitas horas em quadra não geram a evolução que
             o jogador espera.
           </p>
           <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-            Atualmente é difícil encontrar conteúdos de qualidade e totalmente
-            centralizados que expliquem o passo a passo de como melhorar habilidades fundamentais
+            Atualmente é difícil encontrar conteúdos de qualidade e de forma
+            organizada que expliquem o passo a passo de como melhorar habilidades fundamentais
             no basquete.
           </p>
           <p className="text-gray-300 text-lg md:text-xl leading-relaxed">
-            Aqui na plataforma você irá acompanhar treinos completos com
-            descrições e objetivos bem definidos, tanto na quadra quanto na academia e até mesmo em casa.
+            Aqui você encontrará treinos completos com
+            descrições e vídeos para evoluir em diferentes aspectos do jogo.
           </p>
         </div>
       </section>
@@ -181,10 +187,10 @@ export default function Home() {
       >
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 uppercase">
-            Tipos de Treino
+            Consigo treinar apenas na quadra?
           </h2>
           <p className="text-gray-400 mb-12 text-lg">
-            Escolha o ambiente que mais combina com você
+            Claro que não! São vários ambientes para você escolher
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

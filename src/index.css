@@ -101,6 +101,7 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -129,11 +130,9 @@ body {
 
 /* Text gradient */
 .text-gradient {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary) 0%,
-    var(--color-accent) 100%
-  );
+  background: linear-gradient(135deg,
+      var(--color-primary) 0%,
+      var(--color-accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -223,6 +222,7 @@ body {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -233,6 +233,7 @@ body {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -244,6 +245,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -255,6 +257,7 @@ body {
     opacity: 0;
     transform: translateX(100%);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -265,26 +268,31 @@ body {
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
 }
 
 @keyframes pulse-glow {
+
   0%,
   100% {
     box-shadow: 0 0 10px var(--color-primary-glow);
   }
+
   50% {
     box-shadow: 0 0 25px var(--color-primary-glow);
   }
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -308,12 +316,10 @@ body {
 }
 
 .animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    var(--color-surface) 0%,
-    var(--color-surface-elevated) 50%,
-    var(--color-surface) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--color-surface) 0%,
+      var(--color-surface-elevated) 50%,
+      var(--color-surface) 100%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -330,15 +336,19 @@ body {
 .stagger-1 {
   animation-delay: 0.1s;
 }
+
 .stagger-2 {
   animation-delay: 0.2s;
 }
+
 .stagger-3 {
   animation-delay: 0.3s;
 }
+
 .stagger-4 {
   animation-delay: 0.4s;
 }
+
 .stagger-5 {
   animation-delay: 0.5s;
 }
@@ -799,10 +809,12 @@ body {
   height: 60%;
   animation-delay: 0s;
 }
+
 .exercise-player-item-playing-indicator span:nth-child(2) {
   height: 100%;
   animation-delay: 0.2s;
 }
+
 .exercise-player-item-playing-indicator span:nth-child(3) {
   height: 40%;
   animation-delay: 0.4s;
@@ -812,6 +824,7 @@ body {
   from {
     height: 30%;
   }
+
   to {
     height: 100%;
   }
