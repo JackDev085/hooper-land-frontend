@@ -7,6 +7,9 @@ import App from "./App.jsx";
 import AuthProvider from "./context/AuthContext.jsx";
 import Home from "./pages/Home.jsx";
 import ScrollToTop from "./components/utils/ScrollToTop";
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
+import BottomNav from "./components/layout/BottomNav";
 
 // Lazy load de todas as páginas (code splitting automático)
 const Auth = lazy(() => import("./pages/Auth.jsx"));
@@ -49,6 +52,18 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: (
+      <>
+        <Navbar />
+        <main className="bg-black pb-16 md:pb-0 min-h-screen">
+          <Suspense fallback={<PageLoader />}>
+            <NotFound />
+          </Suspense>
+        </main>
+        <Footer />
+        <BottomNav />
+      </>
+    ),
     children: [
       {
         path: "auth",
