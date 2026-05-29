@@ -3,11 +3,10 @@ import { useForm } from "react-hook-form";
 import api from "../services/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Eye, EyeOff, User, Mail, Lock, Loader2 } from "lucide-react";
+import { Eye, EyeOff, User, Mail, Lock, Loader2, Check, X } from "lucide-react";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
   const location = useLocation();
@@ -38,7 +37,7 @@ export default function Auth() {
   });
 
   const onSubmit = async (data) => {
-    setErrorMsg("");
+
 
     try {
       if (isLogin) {
@@ -65,14 +64,14 @@ export default function Auth() {
         });
 
         if (response.status === 201 || response.status === 200) {
-          setErrorMsg("Conta criada com sucesso! Faça login.");
+          alert("Conta criada com sucesso! Faça login.");
           setIsLogin(true);
           reset();
         }
       }
     } catch (error) {
       console.error("Erro na autenticação:", error);
-      setErrorMsg(
+      alert(
         error?.response?.data?.detail || "Erro ao processar requisição",
       );
     }
@@ -81,10 +80,58 @@ export default function Auth() {
   const toggleMode = () => {
     setIsLogin((s) => !s);
     reset();
-    setErrorMsg("");
+
   };
 
-  const password = watch("password");
+  const watchedFields = watch();
+  const password = watchedFields.password;
+
+  // Check if all registration fields are filled and valid
+  const isRegisterComplete =
+    isLogin ||
+    (watchedFields.name?.trim() &&
+      watchedFields.username?.trim() &&
+      watchedFields.email?.trim() &&
+      watchedFields.password &&
+      watchedFields.confirmPassword &&
+      watchedFields.password === watchedFields.confirmPassword &&
+      /[^A-Za-z0-9]/.test(watchedFields.password) &&
+      /\d/.test(watchedFields.password) &&
+      watchedFields.password.length >= 8);
+
+  // Check if login fields are filled
+  const isLoginComplete =
+    !isLogin ||
+    (watchedFields.username?.trim() && watchedFields.password);
+
+  // Real-time password validation rules
+  const passwordRules = [
+    {
+      label: "Mínimo de 8 caracteres",
+      test: (pw) => pw?.length >= 8,
+    },
+    {
+      label: "1 caractere especial (!@#$%...)",
+      test: (pw) => /[^A-Za-z0-9]/.test(pw || ""),
+    },
+    {
+      label: "1 dígito numérico",
+      test: (pw) => /\d/.test(pw || ""),
+    },
+  ];
+
+  const passedCount = passwordRules.filter((r) => r.test(password)).length;
+
+  const getStrength = () => {
+    if (!password) return { level: 0, label: "", color: "" };
+    if (passedCount <= 1)
+      return { level: 1, label: "Fraca", color: "bg-red-500" };
+    if (passedCount === 2)
+      return { level: 2, label: "Média", color: "bg-yellow-500" };
+    return { level: 3, label: "Forte", color: "bg-green-500" };
+  };
+
+  const strength = getStrength();
 
   const inputClasses = (hasError) => `
     w-full px-4 py-3 pl-12
@@ -121,22 +168,7 @@ export default function Auth() {
             </p>
           </div>
 
-          {/* Alert message */}
-          {errorMsg && (
-            <div
-              className={`
-                mb-6 p-4 rounded-xl text-sm font-medium
-                animate-fade-in
-                ${
-                  errorMsg.includes("sucesso")
-                    ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                    : "bg-red-500/20 text-red-400 border border-red-500/30"
-                }
-              `}
-            >
-              {errorMsg}
-            </div>
-          )}
+
 
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -200,6 +232,13 @@ export default function Auth() {
                   {...register("password", {
                     required: "Senha é obrigatória",
                     minLength: { value: 8, message: "Mínimo 8 caracteres" },
+                    validate: {
+                      hasSpecialChar: (v) =>
+                        /[^A-Za-z0-9]/.test(v) ||
+                        "Deve conter 1 caractere especial",
+                      hasDigit: (v) =>
+                        /\d/.test(v) || "Deve conter 1 dígito numérico",
+                    },
                   })}
                   type={showPassword ? "text" : "password"}
                   className={`${inputClasses(errors.password)} pr-12`}
@@ -217,14 +256,88 @@ export default function Auth() {
               </div>
 
               {/* Password requirements - Register only */}
-              {!isLogin && (
-                <div className="text-xs text-gray-500 space-y-1 mt-2">
-                  <p>A senha deve conter:</p>
-                  <ul className="list-disc list-inside space-y-0.5 ml-2">
-                    <li>Mínimo de 8 caracteres</li>
-                    <li>1 caractere especial</li>
-                    <li>1 dígito</li>
-                  </ul>
+              {!isLogin && password && (
+                <div className="mt-3 space-y-3 animate-fade-in">
+                  {/* Validation checklist */}
+                  <div className="space-y-1.5">
+                    {passwordRules.map((rule, i) => {
+                      const passed = rule.test(password);
+                      return (
+                        <div
+                          key={i}
+                          className={`
+                            flex items-center gap-2 text-xs font-medium
+                            transition-all duration-300
+                            ${passed ? "text-green-400" : "text-gray-500"}
+                          `}
+                        >
+                          <span
+                            className={`
+                              flex items-center justify-center w-4 h-4 rounded-full
+                              transition-all duration-300
+                              ${
+                                passed
+                                  ? "bg-green-500/20 text-green-400 scale-110"
+                                  : "bg-gray-700/50 text-gray-500 scale-100"
+                              }
+                            `}
+                          >
+                            {passed ? (
+                              <Check size={10} strokeWidth={3} />
+                            ) : (
+                              <X size={10} strokeWidth={3} />
+                            )}
+                          </span>
+                          {rule.label}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Strength bar */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-gray-500 font-medium">
+                        Força da senha
+                      </span>
+                      {strength.label && (
+                        <span
+                          className={`
+                            text-xs font-bold transition-colors duration-300
+                            ${
+                              strength.level === 1
+                                ? "text-red-400"
+                                : strength.level === 2
+                                  ? "text-yellow-400"
+                                  : "text-green-400"
+                            }
+                          `}
+                        >
+                          {strength.label}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex gap-1.5">
+                      {[1, 2, 3].map((seg) => (
+                        <div
+                          key={seg}
+                          className={`
+                            h-1.5 flex-1 rounded-full
+                            transition-all duration-500
+                            ${
+                              strength.level >= seg
+                                ? seg === 1
+                                  ? "bg-red-500"
+                                  : seg === 2
+                                    ? "bg-yellow-500"
+                                    : "bg-green-500"
+                                : "bg-gray-800"
+                            }
+                          `}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -295,7 +408,7 @@ export default function Auth() {
             {/* Submit button */}
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || (!isLogin && !isRegisterComplete) || (isLogin && !isLoginComplete)}
               className="
                 w-full py-4 mt-4 
                 bg-orange-600 hover:bg-orange-500 
