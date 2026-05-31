@@ -12,6 +12,19 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import BottomNav from "./components/layout/BottomNav";
 
+// Captura erros de chunk load e força recarregamento do app para trazer a versão nova do deploy
+window.addEventListener("error", (e) => {
+  const isChunkError = e.message && (
+    e.message.includes("ChunkLoadError") || 
+    e.message.includes("Loading chunk") ||
+    e.message.includes("Failed to fetch dynamically imported module")
+  );
+  if (isChunkError) {
+    console.warn("Erro de carregamento de módulo/chunk. Recarregando a página...");
+    window.location.reload();
+  }
+}, true);
+
 // Lazy load de todas as páginas (code splitting automático)
 const Auth = lazy(() => import("./pages/Auth.jsx"));
 const Workouts = lazy(() => import("./pages/Workouts.jsx"));
