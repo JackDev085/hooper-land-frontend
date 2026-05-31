@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../services/api";
-import { Mail, User, Sparkles, Edit2, Save, X, Instagram, FileText } from "lucide-react";
+import { Mail, User, Sparkles, Edit2, Save, X, Instagram, FileText, Shield } from "lucide-react";
 import Skeleton from "../components/ui/Skeleton";
 import { useAuth } from "../context/AuthContext";
 
@@ -10,7 +11,9 @@ export default function Me() {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
-  
+  const [ranking, setRanking] = useState([]);
+  const [rankingLoading, setRankingLoading] = useState(true);
+
   // Estado do formulário de edição
   const [formData, setFormData] = useState({
     name: "",
@@ -36,7 +39,19 @@ export default function Me() {
       }
     }
 
+    async function fetchRanking() {
+      try {
+        const res = await api.get("/ranking");
+        setRanking(res.data);
+      } catch (err) {
+        console.error("Erro ao carregar ranking:", err);
+      } finally {
+        setRankingLoading(false);
+      }
+    }
+
     fetchMeInfo();
+    fetchRanking();
   }, []);
 
   const handleEditToggle = () => {
@@ -157,18 +172,34 @@ export default function Me() {
                 <p className="text-gray-300 text-center text-base max-w-md mx-auto italic mb-6">
                   {me.description || "🏀 Adicione uma descrição ao seu perfil..."}
                 </p>
-                <button
-                  onClick={handleEditToggle}
-                  className="
-                    cursor-pointer inline-flex items-center gap-2
-                    bg-transparent border-2 border-gray-700 hover:border-orange-500
-                    hover:text-orange-500 text-gray-400 font-bold px-6 py-2.5 rounded-xl
-                    transition-all duration-300 hover:scale-105
-                  "
-                >
-                  <Edit2 size={16} />
-                  Editar Perfil
-                </button>
+                <div className="flex flex-wrap items-center justify-center gap-3 mt-4">
+                  <button
+                    onClick={handleEditToggle}
+                    className="
+                      cursor-pointer inline-flex items-center gap-2
+                      bg-transparent border-2 border-gray-700 hover:border-orange-500
+                      hover:text-orange-500 text-gray-400 font-bold px-6 py-2.5 rounded-xl
+                      transition-all duration-300 hover:scale-105
+                    "
+                  >
+                    <Edit2 size={16} />
+                    Editar Perfil
+                  </button>
+
+                  {me.role === "admin" && (
+                    <Link
+                      to="/admin"
+                      className="
+                        cursor-pointer inline-flex items-center gap-2
+                        bg-orange-600 hover:bg-orange-700 text-white font-bold px-6 py-2.5 rounded-xl
+                        transition-all duration-300 hover:scale-105 shadow-glow
+                      "
+                    >
+                      <Shield size={16} />
+                      Painel Admin
+                    </Link>
+                  )}
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSave} className="bg-surface border border-gray-800 rounded-2xl p-6 md:p-8 mb-8 space-y-5 animate-fade-in shadow-glow">
@@ -263,7 +294,7 @@ export default function Me() {
 
       {/* Info Sections */}
       <div className="max-w-4xl mx-auto px-6 mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-        
+
         {/* Contact/Basic Info */}
         <div className="space-y-6">
           <h2 className="text-2xl font-extrabold uppercase tracking-wider flex items-center gap-2">
@@ -316,6 +347,70 @@ export default function Me() {
           </div>
         </div>
 
+      </div>
+
+      {/* Seção de Gamificação & Conquistas */}
+      <div className="max-w-4xl mx-auto px-6 mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Streak do Usuário */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-extrabold uppercase tracking-wider flex items-center gap-2">
+            🏆 Suas Conquistas
+          </h2>
+          <div className="bg-gradient-to-br from-orange-600/20 via-red-950/10 to-neutral-900 rounded-2xl p-8 border border-orange-500/20 text-center relative overflow-hidden shadow-lg h-full flex flex-col justify-center min-h-[260px]">
+            <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-orange-600/10 rounded-full blur-2xl pointer-events-none" />
+            <span className="text-6xl block mb-3 animate-bounce">🔥</span>
+            <p className="text-gray-400 text-xs uppercase tracking-wider font-semibold mb-1">Sequência Atual (Streak)</p>
+            <h3 className="text-5xl font-black text-white mb-1">{me.streak_count || 0}</h3>
+            <p className="text-sm text-orange-400 font-bold mb-4">Dias seguidos de treino</p>
+            <p className="text-xs text-gray-400 leading-relaxed max-w-xs mx-auto">
+              {me.streak_count > 0
+                ? "Parabéns! Mantenha a bola quicando e treine amanhã para manter sua streak ativa."
+                : "Você ainda não treinou hoje! Vá para a aba de treinos para pontuar sua streak."}
+            </p>
+          </div>
+        </div>
+
+        {/* Ranking de Líderes */}
+        <div className="space-y-6 mt-20 md:mt-0">
+          <h2 className="text-2xl font-extrabold uppercase tracking-wider flex items-center gap-2">
+            🔥 Top Hoopers (Ranking)
+          </h2>
+          <div className="bg-surface rounded-2xl border border-gray-800 p-6 space-y-4 min-h-[260px] flex flex-col justify-center">
+            {rankingLoading ? (
+              <div className="space-y-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="h-12 bg-neutral-900 rounded-xl animate-pulse" />
+                ))}
+              </div>
+            ) : ranking.length === 0 ? (
+              <p className="text-gray-500 text-center text-sm italic py-8">Nenhum jogador pontuou ainda. Seja o primeiro!</p>
+            ) : (
+              <div className="divide-y divide-gray-800 overflow-y-auto pr-1">
+                {ranking.map((user, idx) => {
+                  const isTop3 = idx < 3;
+                  const medals = ["🥇", "🥈", "🥉"];
+                  return (
+                    <div key={user.username} className="flex items-center justify-between py-3 first:pt-0 last:pb-0">
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-bold text-gray-500 w-6 text-center">
+                          {isTop3 ? medals[idx] : `#${idx + 1}`}
+                        </span>
+                        <div>
+                          <p className="text-white font-bold text-sm">{user.name}</p>
+                          <p className="text-gray-500 text-xs">@{user.username}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 bg-orange-600/10 text-orange-400 px-3 py-1 rounded-full border border-orange-500/20">
+                        <span className="text-sm font-black">{user.streak_count}</span>
+                        <span className="text-xs">🔥</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

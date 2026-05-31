@@ -26,6 +26,10 @@ export default function ExercisePlayer() {
   const [error, setError] = useState("");
   const location = useLocation();
   const [loading, setLoading] = useState(true);
+  const [workoutId, setWorkoutId] = useState(null);
+  const [savingWorkout, setSavingWorkout] = useState(false);
+  const [workoutCompletedSuccessfully, setWorkoutCompletedSuccessfully] = useState(false);
+  const [newStreak, setNewStreak] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [completedExercises, setCompletedExercises] = useState(new Set());
   const [isPlaying, setIsPlaying] = useState(false);
@@ -87,6 +91,7 @@ export default function ExercisePlayer() {
     const queryParams = new URLSearchParams(location.search);
     const workout = queryParams.get("treino");
     if (workout) {
+      setWorkoutId(workout);
       api
         .get(`/exercises/${workout}`)
         .then((response) => {
@@ -269,6 +274,21 @@ export default function ExercisePlayer() {
       setNextExerciseIndex(null);
     }
   }, [nextExerciseIndex]);
+
+  const handleCompleteWorkout = async () => {
+    if (!workoutId) return;
+    setSavingWorkout(true);
+    try {
+      const res = await api.post(`/workouts/${workoutId}/complete`);
+      setNewStreak(res.data.streak_count);
+      setWorkoutCompletedSuccessfully(true);
+    } catch (err) {
+      console.error("Erro ao registrar conclusão de treino:", err);
+      alert("Erro ao registrar conclusão do treino. Tente novamente!");
+    } finally {
+      setSavingWorkout(false);
+    }
+  };
 
   const handleVideoEnded = useCallback(() => {
     handleToggleComplete(activeIndex);
@@ -566,6 +586,39 @@ export default function ExercisePlayer() {
                 {completedExercises.size} de {exercises.length} concluídos
               </span>
             </div>
+
+            {/* Banner de conclusão do treino com gamificação */}
+            {progress === 100 && (
+              <div className="mx-4 my-4 bg-gradient-to-r from-orange-600 to-red-600 rounded-2xl p-5 text-center shadow-lg border border-orange-500/20 relative overflow-hidden animate-pulse-glow">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08)_0,transparent_100%)] pointer-events-none" />
+                
+                {workoutCompletedSuccessfully ? (
+                  <div className="relative z-10 py-2">
+                    <span className="text-4xl block mb-2 animate-bounce">🔥</span>
+                    <h3 className="text-xl font-black text-white mb-1">Treino Registrado!</h3>
+                    <p className="text-orange-100 text-xs mb-3">Sua sequência de treinos (Streak) subiu para:</p>
+                    <div className="inline-flex items-center justify-center bg-black/40 px-5 py-1.5 rounded-full border border-white/10 mb-3">
+                      <span className="text-2xl font-black text-orange-400 mr-2">{newStreak}</span>
+                      <span className="text-xs font-bold text-white">Dias Seguidos 🔥</span>
+                    </div>
+                    <p className="text-orange-200 text-[10px]">Consistência é tudo! Volte amanhã para pontuar novamente.</p>
+                  </div>
+                ) : (
+                  <div className="relative z-10">
+                    <span className="text-3xl block mb-1">🏆</span>
+                    <h3 className="text-lg font-black text-white mb-1">Você concluiu todos os exercícios!</h3>
+                    <p className="text-orange-100 text-xs mb-3">Grave seu treino para somar a sua streak diária no perfil.</p>
+                    <button
+                      onClick={handleCompleteWorkout}
+                      disabled={savingWorkout}
+                      className="w-full bg-white hover:bg-neutral-100 text-orange-600 font-black py-2.5 px-4 rounded-xl transition-all shadow-md active:scale-[0.98] disabled:opacity-50 text-sm"
+                    >
+                      {savingWorkout ? "Registrando..." : "Registrar Treino & Streak! 🔥"}
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
 
             {exercises.length === 0 && (
               <div className="exercise-player-empty">

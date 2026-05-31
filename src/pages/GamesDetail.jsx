@@ -58,7 +58,7 @@ export default function GameDetail() {
         </p>
 
         {/* Informações primárias */}
-        <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 mb-8">
+        <div className="bg-neutral-900 rounded-xl p-6 border border-neutral-800 mb-6">
           <p className="text-lg text-neutral-300 mb-2">
             📍 <span className="font-semibold text-white">{game.address}</span>
           </p>
@@ -71,6 +71,20 @@ export default function GameDetail() {
               })}
             </span>
           </p>
+        </div>
+
+        {/* Mapa Interativo */}
+        <div className="w-full h-[280px] rounded-xl overflow-hidden border border-neutral-800 mb-8 bg-neutral-950 relative">
+          <iframe
+            title={`Mapa de ${game.title}`}
+            width="100%"
+            height="100%"
+            frameBorder="0"
+            style={{ border: 0, filter: "grayscale(1) invert(0.9) contrast(1.2)" }} // Efeito Dark Mode premium no mapa
+            src={`https://maps.google.com/maps?q=${encodeURIComponent(game.address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+            allowFullScreen
+            loading="lazy"
+          />
         </div>
 
         {/* Descrição */}
