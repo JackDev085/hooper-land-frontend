@@ -51,7 +51,7 @@ export default function Home() {
             src="/hero-m.webp"
             alt="Basketball Training"
             className="w-full h-full object-cover"
-            loading="lazy"
+            loading="eager"
             fetchPriority="high"
             width={640}
             height={960}

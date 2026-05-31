@@ -21,13 +21,16 @@ export default function AuthProvider({ children }) {
   }, []);
 
   // Login
-  const login = (token, userData) => {
+  const login = async (token, userData) => {
     localStorage.setItem("token", token);
-    api.get("/me").then(response => {
+    try {
+      const response = await api.get("/me");
       if (response.status === 200) {
-        userData = (response.data)
+        userData = response.data;
       }
-    })
+    } catch (error) {
+      console.error("Erro ao buscar dados do usuário:", error);
+    }
     localStorage.setItem("user_data", JSON.stringify(userData));
     setUser(userData);
   };
@@ -39,8 +42,17 @@ export default function AuthProvider({ children }) {
     setUser(null);
   };
 
+  // Atualizar dados do usuário localmente
+  const updateUser = (updatedData) => {
+    setUser((prev) => {
+      const updated = { ...prev, ...updatedData };
+      localStorage.setItem("user_data", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, loading, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

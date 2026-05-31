@@ -7,6 +7,7 @@ import App from "./App.jsx";
 import AuthProvider from "./context/AuthContext.jsx";
 import Home from "./pages/Home.jsx";
 import ScrollToTop from "./components/utils/ScrollToTop";
+import ProtectedRoute from "./components/utils/ProtectedRoute";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import BottomNav from "./components/layout/BottomNav";
@@ -85,9 +86,11 @@ const router = createBrowserRouter([
       {
         path: "workouts",
         element: (
-          <Suspense fallback={<PageLoader />}>
-            <Workouts />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<PageLoader />}>
+              <Workouts />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
       {/*
@@ -102,25 +105,31 @@ const router = createBrowserRouter([
       {
         path: "games",
         element: (
-          <Suspense fallback={<PageLoader />}>
-            <Games />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<PageLoader />}>
+              <Games />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
       {
         path: "game/:id",
         element: (
-          <Suspense fallback={<PageLoader />}>
-            <GameDetail />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<PageLoader />}>
+              <GameDetail />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
       {
         path: "me",
         element: (
-          <Suspense fallback={<PageLoader />}>
-            <Me />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<PageLoader />}>
+              <Me />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
       {
@@ -173,9 +182,11 @@ const router = createBrowserRouter([
       {
         path: "exercises",
         element: (
-          <Suspense fallback={<PageLoader />}>
-            <ExercisePlayer />
-          </Suspense>
+          <ProtectedRoute>
+            <Suspense fallback={<PageLoader />}>
+              <ExercisePlayer />
+            </Suspense>
+          </ProtectedRoute>
         ),
       },
     ],

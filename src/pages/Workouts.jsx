@@ -1,16 +1,23 @@
 import { useState } from "react";
-import WorkoutHandler from "../hooks/WorkoutHook.jsx";
-import { Home, Dumbbell, MapPin, TreeDeciduous, Search, X } from "lucide-react";
+import { Home, Dumbbell, MapPin, TreeDeciduous, Search, X, Layers } from "lucide-react";
+import useWorkouts from "../hooks/useWorkouts.js";
+import WorkoutList from "../components/ui/WorkoutList.jsx";
 
 export default function Workouts() {
   const categories = [
+    { id: "Todos", icon: Layers, label: "Todos" },
     { id: "Casa", icon: Home, label: "Casa" },
     { id: "Academia", icon: Dumbbell, label: "Academia" },
     { id: "Quadra", icon: MapPin, label: "Quadra" },
     { id: "Livre", icon: TreeDeciduous, label: "Livre" },
   ];
-  const [activeCategory, setActiveCategory] = useState("Casa");
+  const [activeCategory, setActiveCategory] = useState("Todos");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const { filteredWorkouts, loading, error } = useWorkouts({
+    category: activeCategory,
+    searchQuery
+  });
 
   return (
     <div className="w-full min-h-screen bg-black text-white px-6 md:px-16 py-20 pt-24">
@@ -59,7 +66,7 @@ export default function Workouts() {
             })}
           </div>
 
-          {/* Search bar }
+          {/* Search bar */}
           <div className="relative w-full md:w-80">
             <input
               type="text"
@@ -82,14 +89,15 @@ export default function Workouts() {
               </button>
             )}
           </div>
-          */}
         </div>
 
-        {/* Workouts grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <WorkoutHandler
-            category={activeCategory.toLowerCase()}
-            searchQuery={searchQuery}
+        {/* Workouts container */}
+        <div className="w-full">
+          <WorkoutList
+            workouts={filteredWorkouts}
+            loading={loading}
+            error={error}
+            isGrouped={activeCategory === "Todos"}
           />
         </div>
       </div>

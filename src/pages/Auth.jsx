@@ -52,7 +52,7 @@ export default function Auth() {
         });
 
         if (response.status === 200) {
-          login(response.data.access_token, response.data);
+          await login(response.data.access_token, response.data);
           navigate("/workouts");
         }
       } else {
