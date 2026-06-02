@@ -100,11 +100,9 @@ const router = createBrowserRouter([
       {
         path: "workouts",
         element: (
-          <ProtectedRoute>
-            <Suspense fallback={<PageLoader />}>
-              <Workouts />
-            </Suspense>
-          </ProtectedRoute>
+          <Suspense fallback={<PageLoader />}>
+            <Workouts />
+          </Suspense>
         ),
       },
       {/*
@@ -119,21 +117,17 @@ const router = createBrowserRouter([
       {
         path: "games",
         element: (
-          <ProtectedRoute>
-            <Suspense fallback={<PageLoader />}>
-              <Games />
-            </Suspense>
-          </ProtectedRoute>
+          <Suspense fallback={<PageLoader />}>
+            <Games />
+          </Suspense>
         ),
       },
       {
         path: "game/:id",
         element: (
-          <ProtectedRoute>
-            <Suspense fallback={<PageLoader />}>
-              <GameDetail />
-            </Suspense>
-          </ProtectedRoute>
+          <Suspense fallback={<PageLoader />}>
+            <GameDetail />
+          </Suspense>
         ),
       },
       {
@@ -206,11 +200,9 @@ const router = createBrowserRouter([
       {
         path: "exercises",
         element: (
-          <ProtectedRoute>
-            <Suspense fallback={<PageLoader />}>
-              <ExercisePlayer />
-            </Suspense>
-          </ProtectedRoute>
+          <Suspense fallback={<PageLoader />}>
+            <ExercisePlayer />
+          </Suspense>
         ),
       },
     ],

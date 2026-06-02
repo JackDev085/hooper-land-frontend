@@ -85,16 +85,14 @@ export default function Navbar() {
         <Link to="/support" className={navLinkClasses("/support")}>
           Apoie
         </Link>
+        <Link to="/workouts" className={navLinkClasses("/workouts")}>
+          Treinos
+        </Link>
+        <Link to="/games" className={navLinkClasses("/games")}>
+          Rachas
+        </Link>
         {user ? (
           <>
-            <Link to="/workouts" className={navLinkClasses("/workouts")}>
-              Treinos
-            </Link>
-
-            <Link to="/games" className={navLinkClasses("/games")}>
-              Rachas
-            </Link>
-
             <Link to="/me" className={navLinkClasses("/me")}>
               Perfil
             </Link>
@@ -135,18 +133,16 @@ export default function Navbar() {
           <span>Apoie</span>
         </Link>
 
-        {/* Hamburger button (only when logged in) */}
-        {user && (
-          <button
-            aria-controls="mobile-menu"
-            aria-expanded={open}
-            aria-label={open ? "Fechar menu" : "Abrir menu"}
-            onClick={() => setOpen((s) => !s)}
-            className="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300"
-          >
-            {!open ? <Menu className="h-6 w-6" /> : <X className="h-6 w-6" />}
-          </button>
-        )}
+        {/* Hamburger button */}
+        <button
+          aria-controls="mobile-menu"
+          aria-expanded={open}
+          aria-label={open ? "Fechar menu" : "Abrir menu"}
+          onClick={() => setOpen((s) => !s)}
+          className="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300"
+        >
+          {!open ? <Menu className="h-6 w-6" /> : <X className="h-6 w-6" />}
+        </button>
       </div>
 
       {/* Mobile menu panel */}
@@ -196,35 +192,35 @@ export default function Navbar() {
                   Apoie
                 </Link>
 
+                <Link
+                  onClick={() => setOpen(false)}
+                  to="/workouts"
+                  className={`
+                    px-4 py-3 rounded-xl font-medium transition-all duration-300
+                    ${location.pathname === "/workouts"
+                      ? "bg-orange-600/20 text-orange-500"
+                      : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    }
+                  `}
+                >
+                  Treinos
+                </Link>
+                <Link
+                  onClick={() => setOpen(false)}
+                  to="/games"
+                  className={`
+                    px-4 py-3 rounded-xl font-medium transition-all duration-300
+                    ${location.pathname === "/games"
+                      ? "bg-orange-600/20 text-orange-500"
+                      : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    }
+                  `}
+                >
+                  Rachas
+                </Link>
+
                 {user ? (
                   <>
-                    <Link
-                      onClick={() => setOpen(false)}
-                      to="/workouts"
-                      className={`
-                        px-4 py-3 rounded-xl font-medium transition-all duration-300
-                        ${location.pathname === "/workouts"
-                          ? "bg-orange-600/20 text-orange-500"
-                          : "text-gray-300 hover:bg-white/5 hover:text-white"
-                        }
-                      `}
-                    >
-                      Treinos
-                    </Link>
-                    <Link
-                      onClick={() => setOpen(false)}
-                      to="/games"
-                      className={`
-                        px-4 py-3 rounded-xl font-medium transition-all duration-300
-                        ${location.pathname === "/games"
-                          ? "bg-orange-600/20 text-orange-500"
-                          : "text-gray-300 hover:bg-white/5 hover:text-white"
-                        }
-                      `}
-                    >
-                      Rachas
-                    </Link>
-
                     <Link
                       onClick={() => setOpen(false)}
                       to="/me"
@@ -275,6 +271,28 @@ export default function Navbar() {
                   </>
                 ) : (
                   <>
+                    <button
+                      onClick={async () => {
+                        if (deferredPrompt) {
+                          deferredPrompt.prompt();
+                          await deferredPrompt.userChoice;
+                          setDeferredPrompt(null);
+                          setCanInstall(false);
+                          setOpen(false);
+                        } else {
+                          alert(
+                            "Para instalar o aplicativo:\n\n" +
+                            "No iOS (Safari): Toque em 'Compartilhar' e depois em 'Adicionar à Tela de Início'.\n\n" +
+                            "No Android (Chrome): Toque nos 3 pontinhos e depois em 'Adicionar à tela inicial' ou 'Instalar aplicativo'."
+                          );
+                        }
+                      }}
+                      className="flex w-full items-center gap-3 px-4 py-3 rounded-xl font-medium text-left text-gray-300 hover:bg-white/5 hover:text-white transition-all duration-300"
+                    >
+                      <Download size={20} />
+                      Baixar para celular
+                    </button>
+
                     <div className="my-4 border-t border-gray-800" />
                     <Link
                       onClick={() => setOpen(false)}

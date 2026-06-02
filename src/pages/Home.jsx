@@ -93,7 +93,7 @@ export default function Home() {
             {!user ? (
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-                  to="/auth?r=true"
+                  to="/workouts"
                   className="
                     group px-8 py-4 bg-orange-600 hover:bg-orange-500 
                     rounded-xl font-bold text-lg 
@@ -263,22 +263,36 @@ export default function Home() {
               />
             </Link>
           ) : (
-            <Link
-              to="/auth?r=true"
-              className="
-                group inline-flex items-center gap-2
-                px-10 py-5 bg-black text-white 
-                rounded-xl text-lg font-bold 
-                transition-all duration-300
-                hover:bg-gray-900 hover:shadow-lg hover:-translate-y-1
-              "
-            >
-              Registre-se gratuitamente
-              <ChevronRight
-                size={20}
-                className="transition-transform group-hover:translate-x-1"
-              />
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/workouts"
+                className="
+                  group inline-flex items-center justify-center gap-2
+                  px-10 py-5 bg-black text-white 
+                  rounded-xl text-lg font-bold 
+                  transition-all duration-300
+                  hover:bg-gray-900 hover:shadow-lg hover:-translate-y-1
+                "
+              >
+                Começar a treinar
+                <ChevronRight
+                  size={20}
+                  className="transition-transform group-hover:translate-x-1"
+                />
+              </Link>
+              <Link
+                to="/auth?r=true"
+                className="
+                  group inline-flex items-center justify-center gap-2
+                  px-10 py-5 bg-transparent border-2 border-white/20 text-white 
+                  hover:border-white rounded-xl text-lg font-bold 
+                  transition-all duration-300
+                  hover:shadow-lg hover:-translate-y-1
+                "
+              >
+                Criar conta gratuita
+              </Link>
+            </div>
           )}
         </div>
       </section>

@@ -607,14 +607,28 @@ export default function ExercisePlayer() {
                   <div className="relative z-10">
                     <span className="text-3xl block mb-1">🏆</span>
                     <h3 className="text-lg font-black text-white mb-1">Você concluiu todos os exercícios!</h3>
-                    <p className="text-orange-100 text-xs mb-3">Grave seu treino para somar a sua streak diária no perfil.</p>
-                    <button
-                      onClick={handleCompleteWorkout}
-                      disabled={savingWorkout}
-                      className="w-full bg-white hover:bg-neutral-100 text-orange-600 font-black py-2.5 px-4 rounded-xl transition-all shadow-md active:scale-[0.98] disabled:opacity-50 text-sm"
-                    >
-                      {savingWorkout ? "Registrando..." : "Registrar Treino & Streak! 🔥"}
-                    </button>
+                    {localStorage.getItem("token") ? (
+                      <>
+                        <p className="text-orange-100 text-xs mb-3">Grave seu treino para somar a sua streak diária no perfil.</p>
+                        <button
+                          onClick={handleCompleteWorkout}
+                          disabled={savingWorkout}
+                          className="w-full bg-white hover:bg-neutral-100 text-orange-600 font-black py-2.5 px-4 rounded-xl transition-all shadow-md active:scale-[0.98] disabled:opacity-50 text-sm cursor-pointer"
+                        >
+                          {savingWorkout ? "Registrando..." : "Registrar Treino & Streak! 🔥"}
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-orange-100 text-xs mb-3">Faça login para salvar este treino em sua conta e iniciar sua streak!</p>
+                        <Link
+                          to="/auth"
+                          className="inline-block w-full bg-white hover:bg-neutral-100 text-orange-600 font-black py-2.5 px-4 rounded-xl transition-all shadow-md active:scale-[0.98] text-sm cursor-pointer"
+                        >
+                          Entrar / Criar Conta 🔥
+                        </Link>
+                      </>
+                    )}
                   </div>
                 )}
               </div>

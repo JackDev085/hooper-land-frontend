@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Home, Dumbbell, MapPin, User, Heart } from "lucide-react";
+import { Home, Dumbbell, MapPin, User } from "lucide-react";
 
 export default function BottomNav() {
   const { user } = useAuth();
@@ -16,7 +16,8 @@ export default function BottomNav() {
       ]
     : [
         { path: "/", icon: Home, label: "Início" },
-        { path: "/support", icon: Heart, label: "Apoie" },
+        { path: "/workouts", icon: Dumbbell, label: "Treinos" },
+        { path: "/games", icon: MapPin, label: "Rachas" },
         { path: "/auth", icon: User, label: "Entrar" },
       ];
 
