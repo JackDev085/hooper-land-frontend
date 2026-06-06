@@ -60,8 +60,8 @@ export default function Home() {
         </picture>
 
         {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/40 via-transparent to-black/40" />
 
         {/* Content */}
         <div className="relative z-10 text-center px-6 pt-20">
@@ -182,7 +182,7 @@ export default function Home() {
 
       {/* CATEGORIAS DE TREINO */}
       <section
-        className="py-24 px-6 md:px-20 bg-gradient-to-b from-black via-neutral-950 to-black"
+        className="py-24 px-6 md:px-20 bg-linear-to-b from-black via-neutral-950 to-black"
         id="treinos"
       >
         <div className="max-w-6xl mx-auto">
@@ -204,7 +204,7 @@ export default function Home() {
                     border border-gray-800 hover:border-orange-500/50
                     transition-all duration-500 ease-out
                     hover:shadow-glow hover:-translate-y-2
-                    bg-gradient-to-br ${cat.gradient} 
+                    bg-linear-to-br ${cat.gradient} 
                     p-8 h-56 flex flex-col items-center justify-center
                     animate-fade-in-up
                   `}
@@ -235,7 +235,7 @@ export default function Home() {
       {/* CTA FINAL */}
       <section className="relative py-24 px-6 md:px-20 overflow-hidden">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-700 via-orange-600 to-red-600" />
+        <div className="absolute inset-0 bg-linear-to-r from-orange-700 via-orange-600 to-red-600" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,0,0,0.3),transparent)]" />
 
         <div className="relative z-10 max-w-4xl mx-auto text-center">
