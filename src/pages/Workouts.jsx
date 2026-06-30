@@ -56,6 +56,7 @@ export default function Workouts() {
                     }
                   `}
                 >
+
                   <Icon
                     size={18}
                     className={`transition-transform duration-300 ${isActive ? "scale-110" : "group-hover:scale-110"}`}

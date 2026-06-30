@@ -15,7 +15,7 @@ import BottomNav from "./components/layout/BottomNav";
 // Captura erros de chunk load e força recarregamento do app para trazer a versão nova do deploy
 window.addEventListener("error", (e) => {
   const isChunkError = e.message && (
-    e.message.includes("ChunkLoadError") || 
+    e.message.includes("ChunkLoadError") ||
     e.message.includes("Loading chunk") ||
     e.message.includes("Failed to fetch dynamically imported module")
   );
@@ -36,7 +36,6 @@ const Donate = lazy(() => import("./pages/Donate.jsx"));
 const About = lazy(() => import("./pages/About.jsx"));
 const Privacy = lazy(() => import("./pages/Privacy.jsx"));
 const Terms = lazy(() => import("./pages/Terms.jsx"));
-const ExercisePlayer = lazy(() => import("./pages/ExercisePlayer.jsx"));
 const Admin = lazy(() => import("./pages/Admin.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 
@@ -105,14 +104,13 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
-      {/*
+      {
         path: "exercises",
         element: (
           <Suspense fallback={<PageLoader />}>
             <Exercises />
           </Suspense>
         ),
-        */
       },
       {
         path: "games",
@@ -192,21 +190,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // Layout imersivo (sem Navbar/Footer — experiência de player)
-  {
-    path: "/",
-    element: <PlayerLayout />,
-    children: [
-      {
-        path: "exercises",
-        element: (
-          <Suspense fallback={<PageLoader />}>
-            <ExercisePlayer />
-          </Suspense>
-        ),
-      },
-    ],
-  },
+
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

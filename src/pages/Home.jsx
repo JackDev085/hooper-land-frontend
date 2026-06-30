@@ -77,12 +77,9 @@ export default function Home() {
               Eleve Seu <span className="text-gradient">Jogo</span>
             </h1>
 
-
-
             <video className="rounded-md mb-4 md:hidden" autoPlay loop muted playsInline>
               <source fetchPriority="high" src="hero.webm" type="video/webm" />
             </video>
-
             <p className="text-lg italic md:text-xl max-w-2xl mx-auto mb-10 text-gray-300 leading-relaxed">
               "Treinos para quem não tem ideia do que treinar. Essa é a premissa
               do{" "}

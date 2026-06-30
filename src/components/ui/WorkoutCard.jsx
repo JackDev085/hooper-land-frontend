@@ -33,9 +33,9 @@ export default function WorkoutCard({ workout }) {
 
       {/* Content */}
       <div className="p-6">
-        <h2 className="text-xl font-bold mb-4 text-white group-hover:text-orange-500 transition-colors duration-300 line-clamp-2">
+        <h3 className="text-xl font-semibold mb-4 text-gray-300 group-hover:text-orange-500 transition-colors duration-300 line-clamp-2">
           {workout.name}
-        </h2>
+        </h3>
 
         <div
           className="
