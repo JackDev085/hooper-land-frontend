@@ -77,9 +77,6 @@ export default function Home() {
               Eleve Seu <span className="text-gradient">Jogo</span>
             </h1>
 
-            <video className="rounded-md mb-4 md:hidden" autoPlay loop muted playsInline>
-              <source fetchPriority="high" src="hero.webm" type="video/webm" />
-            </video>
             <p className="text-lg italic md:text-xl max-w-2xl mx-auto mb-10 text-gray-300 leading-relaxed">
               "Treinos para quem não tem ideia do que treinar. Essa é a premissa
               do{" "}
@@ -141,13 +138,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Scroll indicator 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2">
-            <div className="w-1 h-2 bg-white/50 rounded-full animate-pulse" />
-          </div>
-        </div>
-        */}
       </section>
 
       {/* SOBRE SECTION */}

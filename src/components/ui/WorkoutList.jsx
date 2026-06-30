@@ -2,10 +2,10 @@ import WorkoutCard from "./WorkoutCard";
 import { SkeletonCard } from "./Skeleton";
 
 const CATEGORY_LABELS = {
-  casa: "🏠 Em Casa",
-  academia: "💪 Na Academia",
-  quadra: "🏀 Na Quadra",
-  livre: "🌳 Ao Ar Livre"
+  casa: "Em Casa",
+  academia: "Na Academia",
+  quadra: "Na Quadra",
+  livre: "Ao Ar Livre"
 };
 
 export default function WorkoutList({ workouts = [], loading = false, error = null, isGrouped = false }) {
