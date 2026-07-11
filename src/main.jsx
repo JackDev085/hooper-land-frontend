@@ -28,6 +28,7 @@ window.addEventListener("error", (e) => {
 // Lazy load de todas as páginas (code splitting automático)
 const Auth = lazy(() => import("./pages/Auth.jsx"));
 const Workouts = lazy(() => import("./pages/Workouts.jsx"));
+const NeuroCognition = lazy(() => import("./pages/NeuroCognition.jsx"));
 const Exercises = lazy(() => import("./pages/Exercises.jsx"));
 const Games = lazy(() => import("./pages/Games.jsx"));
 const GameDetail = lazy(() => import("./pages/GamesDetail.jsx"));
@@ -101,6 +102,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <Workouts />
+          </Suspense>
+        ),
+      },
+      {
+        path: "neuro-cognition",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <NeuroCognition />
           </Suspense>
         ),
       },

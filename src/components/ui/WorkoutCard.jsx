@@ -2,9 +2,10 @@ import { Link } from "react-router-dom";
 import { Clock, ChevronRight } from "lucide-react";
 
 export default function WorkoutCard({ workout }) {
+  const isNeuro = workout.id === 999 || workout.slug === "neuro-cognition";
   return (
     <Link
-      to={`/exercises?treino=${workout.id}`}
+      to={isNeuro ? "/neuro-cognition" : `/exercises?treino=${workout.id}`}
       className="
         group relative bg-surface rounded-2xl overflow-hidden block
         border border-gray-800 hover:border-orange-500/50
@@ -15,7 +16,7 @@ export default function WorkoutCard({ workout }) {
       {/* Image with overlay */}
       <div className="relative h-56 overflow-hidden">
         <img
-          src={`https://i.ytimg.com/vi/${workout.slug}/mqdefault.jpg`}
+          src={isNeuro ? "/neurocognition.png" : `https://i.ytimg.com/vi/${workout.slug}/mqdefault.jpg`}
           alt={workout.name}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />

@@ -14,12 +14,10 @@ export default function ProtectedRoute({ children, requireAdmin = false }) {
   }
 
   if (!user) {
-    // Redireciona para o login salvando a página que tentou acessar
     return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
   if (requireAdmin && user.role !== "admin") {
-    // Se precisar ser admin e não for, redireciona para a home
     return <Navigate to="/" replace />;
   }
 

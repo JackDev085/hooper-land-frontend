@@ -13,10 +13,38 @@ export default function useWorkouts({ category, searchQuery } = {}) {
       setError(null);
       try {
         const response = await api.get("/workouts");
-        setWorkouts(response.data);
+        let apiData = response.data || [];
+
+        const neuroWorkout = {
+          id: 999,
+          name: "Neurocognição: Drible por Comandos",
+          desc: "Treino cognitivo dinâmico para tomadas de decisão rápidas sob comandos de voz de drible, pernada e raquetada.",
+          duration: "Ajustável",
+          category: "Livre",
+          slug: "neuro-cognition",
+          premium: true
+        };
+
+        if (!apiData.some(w => w.id === 999 || w.slug === "neuro-cognition")) {
+          apiData = [neuroWorkout, ...apiData];
+        }
+
+        setWorkouts(apiData);
       } catch (err) {
         console.error("Erro ao buscar treinos:", err);
-        setError(err);
+        const localFallbacks = [
+          {
+            id: 999,
+            name: "Neurocognição: Drible por Comandos",
+            desc: "Treino cognitivo dinâmico para tomadas de decisão rápidas sob comandos de voz de drible, pernada e raquetada.",
+            duration: "Ajustável",
+            category: "Livre",
+            slug: "neuro-cognition",
+            premium: true
+          },
+        ];
+        setWorkouts(localFallbacks);
+        setError(null);
       } finally {
         setLoading(false);
       }
@@ -28,7 +56,7 @@ export default function useWorkouts({ category, searchQuery } = {}) {
   useEffect(() => {
     const filtered = workouts.filter((workout) => {
       const matchesCategory = category && category.toLowerCase() !== "todos"
-        ? workout.category.toLowerCase() === category.toLowerCase() 
+        ? workout.category.toLowerCase() === category.toLowerCase()
         : true;
       const matchesSearch = searchQuery
         ? workout.name.toLowerCase().includes(searchQuery.toLowerCase())
