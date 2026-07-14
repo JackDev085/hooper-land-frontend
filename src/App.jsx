@@ -1,5 +1,8 @@
 import "./index.css";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
+import { registerPushNotifications } from "./utils/notifications";
 
 // NAVBAR E FOOTER GLOBAIS + BREADCRUMB DINÂMICO
 import Navbar from "./components/layout/Navbar";
@@ -8,6 +11,13 @@ import BottomNav from "./components/layout/BottomNav";
 import ScrollToTop from "./components/utils/ScrollToTop";
 
 function App() {
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      registerPushNotifications();
+    }
+  }, [user]);
   return (
     <>
       <ScrollToTop />

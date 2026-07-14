@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
-import { Mail, User, Sparkles, Edit2, Save, X, Instagram, FileText, Shield } from "lucide-react";
+import { Mail, User, Sparkles, Edit2, Save, X, Instagram, FileText, Shield, Activity, TrendingUp, Scale, Ruler, Calendar, Smartphone } from "lucide-react";
 import Skeleton from "../components/ui/Skeleton";
 import { useAuth } from "../context/AuthContext";
+import ModalAvaliacao from "../components/ModalAvaliacao";
 
 export default function Me() {
   const { updateUser } = useAuth();
@@ -14,11 +15,21 @@ export default function Me() {
   const [ranking, setRanking] = useState([]);
   const [rankingLoading, setRankingLoading] = useState(true);
 
+  // Controle de Modais Hooper
+  const [modalPreOpen, setModalPreOpen] = useState(false);
+  const [modalPosOpen, setModalPosOpen] = useState(false);
+
   // Estado do formulário de edição
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    instagram: ""
+    instagram: "",
+    sex: "",
+    position: "",
+    birth_date: "",
+    phone: "",
+    weigth: "",
+    heigth: ""
   });
 
   useEffect(() => {
@@ -30,7 +41,13 @@ export default function Me() {
         setFormData({
           name: res.data.name || "",
           description: res.data.description || "",
-          instagram: res.data.instagram || ""
+          instagram: res.data.instagram || "",
+          sex: res.data.sex || "",
+          position: res.data.position || "",
+          birth_date: res.data.birth_date || "",
+          phone: res.data.phone || "",
+          weigth: res.data.weigth || "",
+          heigth: res.data.heigth || ""
         });
       } catch (err) {
         console.error("Erro ao carregar perfil:", err);
@@ -60,7 +77,13 @@ export default function Me() {
       setFormData({
         name: me.name || "",
         description: me.description || "",
-        instagram: me.instagram || ""
+        instagram: me.instagram || "",
+        sex: me.sex || "",
+        position: me.position || "",
+        birth_date: me.birth_date || "",
+        phone: me.phone || "",
+        weigth: me.weigth || "",
+        heigth: me.heigth || ""
       });
     }
     setIsEditing(!isEditing);
@@ -78,7 +101,12 @@ export default function Me() {
     e.preventDefault();
     setSaving(true);
     try {
-      const response = await api.put("/me", formData);
+      const payload = {
+        ...formData,
+        weigth: formData.weigth ? parseFloat(formData.weigth) : null,
+        heigth: formData.heigth ? parseFloat(formData.heigth) : null,
+      };
+      const response = await api.put("/me", payload);
       setMe(response.data);
       // Atualiza o estado global de autenticação
       updateUser(response.data);
@@ -126,7 +154,6 @@ export default function Me() {
       <div className="relative bg-gradient-to-b from-orange-900/20 to-black pb-8">
         {/* Cover photo with pattern */}
         <div className="relative h-44 bg-gradient-to-r from-orange-600 to-red-600 overflow-hidden">
-          {/* Decorative pattern */}
           <div className="absolute inset-0 opacity-20">
             <div
               className="absolute inset-0"
@@ -245,6 +272,120 @@ export default function Me() {
                   </div>
                 </div>
 
+                {/* Grid para Posição e Gênero */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Position Input */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="position" className="text-xs uppercase tracking-wider font-semibold text-gray-400">
+                      Posição Principal
+                    </label>
+                    <select
+                      id="position"
+                      name="position"
+                      value={formData.position}
+                      onChange={handleChange}
+                      className="w-full bg-black border border-gray-800 focus:border-orange-500/50 focus:outline-none rounded-xl py-3 px-4 text-sm transition-all text-white"
+                    >
+                      <option value="">Selecione...</option>
+                      <option value="Armador">Armador</option>
+                      <option value="Ala-Armador">Ala-Armador</option>
+                      <option value="Ala">Ala</option>
+                      <option value="Ala-Pivô">Ala-Pivô</option>
+                      <option value="Pivô">Pivô</option>
+                    </select>
+                  </div>
+
+                  {/* Sex Input */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="sex" className="text-xs uppercase tracking-wider font-semibold text-gray-400">
+                      Gênero
+                    </label>
+                    <select
+                      id="sex"
+                      name="sex"
+                      value={formData.sex}
+                      onChange={handleChange}
+                      className="w-full bg-black border border-gray-800 focus:border-orange-500/50 focus:outline-none rounded-xl py-3 px-4 text-sm transition-all text-white"
+                    >
+                      <option value="">Selecione...</option>
+                      <option value="Masculino">Masculino</option>
+                      <option value="Feminino">Feminino</option>
+                      <option value="Outro">Outro</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Grid para Nascimento e Telefone */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Birth Date Input */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="birth_date" className="text-xs uppercase tracking-wider font-semibold text-gray-400">
+                      Data de Nascimento
+                    </label>
+                    <input
+                      type="date"
+                      id="birth_date"
+                      name="birth_date"
+                      value={formData.birth_date}
+                      onChange={handleChange}
+                      className="w-full bg-black border border-gray-800 focus:border-orange-500/50 focus:outline-none rounded-xl py-3 px-4 text-sm transition-all text-white"
+                    />
+                  </div>
+
+                  {/* Phone Input */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="phone" className="text-xs uppercase tracking-wider font-semibold text-gray-400">
+                      Telefone
+                    </label>
+                    <input
+                      type="text"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full bg-black border border-gray-800 focus:border-orange-500/50 focus:outline-none rounded-xl py-3 px-4 text-sm transition-all text-white placeholder-gray-600"
+                      placeholder="Ex: (85) 99999-9999"
+                    />
+                  </div>
+                </div>
+
+                {/* Grid para Peso e Altura */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Weight Input */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="weigth" className="text-xs uppercase tracking-wider font-semibold text-gray-400">
+                      Peso (kg)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      id="weigth"
+                      name="weigth"
+                      value={formData.weigth}
+                      onChange={handleChange}
+                      className="w-full bg-black border border-gray-800 focus:border-orange-500/50 focus:outline-none rounded-xl py-3 px-4 text-sm transition-all text-white placeholder-gray-600"
+                      placeholder="Ex: 85.5"
+                    />
+                  </div>
+
+                  {/* Height Input */}
+                  <div className="space-y-1.5">
+                    <label htmlFor="heigth" className="text-xs uppercase tracking-wider font-semibold text-gray-400">
+                      Altura (m)
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      id="heigth"
+                      name="heigth"
+                      value={formData.heigth}
+                      onChange={handleChange}
+                      className="w-full bg-black border border-gray-800 focus:border-orange-500/50 focus:outline-none rounded-xl py-3 px-4 text-sm transition-all text-white placeholder-gray-600"
+                      placeholder="Ex: 1.88"
+                    />
+                  </div>
+                </div>
+
                 {/* Description Input */}
                 <div className="space-y-1.5">
                   <label htmlFor="description" className="text-xs uppercase tracking-wider font-semibold text-gray-400 flex items-center gap-1.5">
@@ -299,50 +440,123 @@ export default function Me() {
         <div className="space-y-6">
           <h2 className="text-2xl font-extrabold uppercase tracking-wider flex items-center gap-2">
             <Mail size={24} className="text-orange-500" />
-            Dados Básicos
+            Dados Pessoais
           </h2>
           <div className="space-y-4">
-            <div className="bg-surface rounded-2xl p-6 border border-gray-800">
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-2 font-semibold">
-                Email
-              </p>
-              <p className="text-white text-lg font-semibold flex items-center gap-2">
-                <Mail size={18} className="text-gray-500" />
-                {me.email}
-              </p>
+            <div className="bg-surface rounded-2xl p-6 border border-gray-800 space-y-4">
+              <div>
+                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1 font-semibold">
+                  Email
+                </p>
+                <p className="text-white text-base font-semibold flex items-center gap-2">
+                  <Mail size={16} className="text-gray-500" />
+                  {me.email}
+                </p>
+              </div>
+
+              {me.phone && (
+                <div>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1 font-semibold">
+                    Telefone
+                  </p>
+                  <p className="text-white text-base font-semibold flex items-center gap-2">
+                    <Smartphone size={16} className="text-gray-500" />
+                    {me.phone}
+                  </p>
+                </div>
+              )}
+
+              {me.birth_date && (
+                <div>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1 font-semibold">
+                    Data de Nascimento
+                  </p>
+                  <p className="text-white text-base font-semibold flex items-center gap-2">
+                    <Calendar size={16} className="text-gray-500" />
+                    {new Date(me.birth_date + "T00:00:00").toLocaleDateString("pt-BR")}
+                  </p>
+                </div>
+              )}
+
+              {me.sex && (
+                <div>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1 font-semibold">
+                    Gênero
+                  </p>
+                  <p className="text-white text-base font-semibold">
+                    {me.sex}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Social / Instagram section */}
+        {/* Athletic / Physical Info */}
         <div className="space-y-6">
           <h2 className="text-2xl font-extrabold uppercase tracking-wider flex items-center gap-2">
-            <Instagram size={24} className="text-orange-500" />
-            Redes Sociais
+            <Activity size={24} className="text-orange-500" />
+            Ficha do Atleta
           </h2>
           <div className="space-y-4">
-            <div className="bg-surface rounded-2xl p-6 border border-gray-800">
-              <p className="text-gray-500 text-xs uppercase tracking-wider mb-2 font-semibold">
-                Instagram
-              </p>
-              {me.instagram ? (
-                <a
-                  href={`https://instagram.com/${me.instagram}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                    group text-white text-lg font-semibold flex items-center gap-2 
-                    hover:text-orange-500 transition-colors
-                  "
-                >
-                  <Instagram size={18} className="text-gray-500 group-hover:text-orange-500 transition-colors" />
-                  @{me.instagram}
-                </a>
-              ) : (
-                <p className="text-gray-500 italic text-sm">
-                  Nenhum Instagram adicionado
+            <div className="bg-surface rounded-2xl p-6 border border-gray-800 space-y-4">
+              <div>
+                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1 font-semibold">
+                  Posição Principal
                 </p>
+                <p className="text-white text-base font-semibold flex items-center gap-2">
+                  <Sparkles size={16} className="text-gray-500" />
+                  {me.position || <span className="text-gray-500 italic text-sm">Não especificada</span>}
+                </p>
+              </div>
+
+              {me.weigth && (
+                <div>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1 font-semibold">
+                    Peso
+                  </p>
+                  <p className="text-white text-base font-semibold flex items-center gap-2">
+                    <Scale size={16} className="text-gray-500" />
+                    {me.weigth} kg
+                  </p>
+                </div>
               )}
+
+              {me.heigth && (
+                <div>
+                  <p className="text-gray-500 text-xs uppercase tracking-wider mb-1 font-semibold">
+                    Altura
+                  </p>
+                  <p className="text-white text-base font-semibold flex items-center gap-2">
+                    <Ruler size={16} className="text-gray-500" />
+                    {me.heigth} m
+                  </p>
+                </div>
+              )}
+
+              <div>
+                <p className="text-gray-500 text-xs uppercase tracking-wider mb-1 font-semibold">
+                  Instagram
+                </p>
+                {me.instagram ? (
+                  <a
+                    href={`https://instagram.com/${me.instagram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                      group text-white text-base font-semibold flex items-center gap-2 
+                      hover:text-orange-500 transition-colors
+                    "
+                  >
+                    <Instagram size={16} className="text-gray-500 group-hover:text-orange-500 transition-colors" />
+                    @{me.instagram}
+                  </a>
+                ) : (
+                  <p className="text-gray-500 italic text-sm">
+                    Nenhum Instagram adicionado
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -412,6 +626,18 @@ export default function Me() {
           </div>
         </div>
       </div>
+
+      {/* Modais Hooper */}
+      <ModalAvaliacao
+        isOpen={modalPreOpen}
+        onClose={() => setModalPreOpen(false)}
+        pos={false}
+      />
+      <ModalAvaliacao
+        isOpen={modalPosOpen}
+        onClose={() => setModalPosOpen(false)}
+        pos={true}
+      />
     </div>
   );
 }

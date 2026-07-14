@@ -39,6 +39,7 @@ const Privacy = lazy(() => import("./pages/Privacy.jsx"));
 const Terms = lazy(() => import("./pages/Terms.jsx"));
 const Admin = lazy(() => import("./pages/Admin.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
+const UserDash = lazy(() => import("./pages/UserDash.jsx"));
 
 // Fallback mínimo para Suspense (CSS spinner, sem GIF pesado)
 function PageLoader() {
@@ -153,6 +154,16 @@ const router = createBrowserRouter([
           <ProtectedRoute requireAdmin={true}>
             <Suspense fallback={<PageLoader />}>
               <Admin />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "dash",
+        element: (
+          <ProtectedRoute>
+            <Suspense fallback={<PageLoader />}>
+              <UserDash />
             </Suspense>
           </ProtectedRoute>
         ),

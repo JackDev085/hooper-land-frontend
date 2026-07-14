@@ -15,10 +15,11 @@ export default defineConfig({
         enabled: true
       },
       workbox: {
+        importScripts: ['/sw-push.js'],
         // Não pre-cache imagens pesadas — deixa o browser cuidar do cache
         globPatterns: ['**/*.{js,css,html,svg,woff2}'],
         // Limita o tamanho do precache
-        maximumFileSizeToCacheInBytes: 300 * 1024,
+        maximumFileSizeToCacheInBytes: 600 * 1024,
         runtimeCaching: [
           {
             // Cache de imagens sob demanda (não precache)
