@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   TrendingUp,
   Calendar,
@@ -33,6 +33,7 @@ import GoalDetailModal from "../components/athlete_evolution/GoalDetailModal";
 
 export default function UserDash() {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   // Tabs: 'dashboard' | 'journal' | 'games' | 'goals'
   const [activeTab, setActiveTab] = useState(user?.premium ? "dashboard" : "journal");
@@ -58,6 +59,21 @@ export default function UserDash() {
 
   // Fetch all data
   const fetchData = async () => {
+    if (!user) {
+      setDashboardData({
+        habits: [],
+        consistency: {
+          workouts_this_month: 0,
+          weekly_frequency: 0,
+          streak: 0
+        }
+      });
+      setRecentGames([]);
+      setCompetitionsList([]);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     try {
       if (user?.premium) {
@@ -138,6 +154,11 @@ export default function UserDash() {
   };
 
   const handleDeleteGame = async (id) => {
+    if (!user) {
+      alert("Faça login para gerenciar suas partidas.");
+      navigate("/auth");
+      return;
+    }
     try {
       await api.delete(`/athlete/game/${id}`);
       setSuccessMsg("Partida excluída com sucesso.");
@@ -146,6 +167,24 @@ export default function UserDash() {
       console.error(err);
       setErrorMsg("Erro ao excluir partida.");
     }
+  };
+
+  const handleOpenJournalModal = () => {
+    if (!user) {
+      alert("Faça login para registrar suas atividades e acompanhar sua evolução!");
+      navigate("/auth");
+      return;
+    }
+    setShowJournalModal(true);
+  };
+
+  const handleOpenGameModal = () => {
+    if (!user) {
+      alert("Faça login para registrar suas partidas e acompanhar suas estatísticas!");
+      navigate("/auth");
+      return;
+    }
+    setShowGameModal(true);
   };
 
   return (
@@ -292,7 +331,7 @@ export default function UserDash() {
             {activeTab === "journal" && (
               <JournalTab
                 dashboardData={dashboardData}
-                onOpenRegister={() => setShowJournalModal(true)}
+                onOpenRegister={handleOpenJournalModal}
                 onSelectDetail={setSelectedJournalDetail}
               />
             )}
@@ -301,7 +340,7 @@ export default function UserDash() {
               <GamesTab
                 recentGames={recentGames}
                 competitions={competitionsList}
-                onOpenRegister={() => setShowGameModal(true)}
+                onOpenRegister={handleOpenGameModal}
                 onSelectDetail={setSelectedGameDetail}
                 onDeleteGame={handleDeleteGame}
               />

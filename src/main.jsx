@@ -8,6 +8,7 @@ import AuthProvider from "./context/AuthContext.jsx";
 import Home from "./pages/Home.jsx";
 import ScrollToTop from "./components/utils/ScrollToTop";
 import ProtectedRoute from "./components/utils/ProtectedRoute";
+import WorkoutGuard from "./components/utils/WorkoutGuard";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import BottomNav from "./components/layout/BottomNav";
@@ -109,9 +110,11 @@ const router = createBrowserRouter([
       {
         path: "neuro-cognition",
         element: (
-          <Suspense fallback={<PageLoader />}>
-            <NeuroCognition />
-          </Suspense>
+          <WorkoutGuard>
+            <Suspense fallback={<PageLoader />}>
+              <NeuroCognition />
+            </Suspense>
+          </WorkoutGuard>
         ),
       },
       {
@@ -161,11 +164,9 @@ const router = createBrowserRouter([
       {
         path: "dash",
         element: (
-          <ProtectedRoute>
-            <Suspense fallback={<PageLoader />}>
-              <UserDash />
-            </Suspense>
-          </ProtectedRoute>
+          <Suspense fallback={<PageLoader />}>
+            <UserDash />
+          </Suspense>
         ),
       },
       {

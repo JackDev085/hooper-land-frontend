@@ -91,11 +91,9 @@ export default function Navbar() {
         <Link to="/games" className={navLinkClasses("/games")}>
           Rachas
         </Link>
-        {user && (
-          <Link to="/dash" className={navLinkClasses("/dash")}>
-            Métricas
-          </Link>
-        )}
+        <Link to="/dash" className={navLinkClasses("/dash")}>
+          Métricas
+        </Link>
         {user ? (
           <>
             <Link to="/me" className={navLinkClasses("/me")}>
@@ -223,22 +221,22 @@ export default function Navbar() {
                 >
                   Rachas
                 </Link>
+                <Link
+                  onClick={() => setOpen(false)}
+                  to="/dash"
+                  className={`
+                    px-4 py-3 rounded-xl font-medium transition-all duration-300
+                    ${location.pathname === "/dash"
+                      ? "bg-orange-600/20 text-orange-500"
+                      : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    }
+                  `}
+                >
+                  Métricas
+                </Link>
 
                 {user ? (
                   <>
-                    <Link
-                      onClick={() => setOpen(false)}
-                      to="/dash"
-                      className={`
-                        px-4 py-3 rounded-xl font-medium transition-all duration-300
-                        ${location.pathname === "/dash"
-                          ? "bg-orange-600/20 text-orange-500"
-                          : "text-gray-300 hover:bg-white/5 hover:text-white"
-                        }
-                      `}
-                    >
-                      Métricas
-                    </Link>
                     <Link
                       onClick={() => setOpen(false)}
                       to="/me"
