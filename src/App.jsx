@@ -9,6 +9,7 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import BottomNav from "./components/layout/BottomNav";
 import ScrollToTop from "./components/utils/ScrollToTop";
+import InAppBrowserGuard from "./components/utils/InAppBrowserGuard";
 
 function App() {
   const { user } = useAuth();
@@ -20,6 +21,7 @@ function App() {
   }, [user]);
   return (
     <>
+      <InAppBrowserGuard />
       <ScrollToTop />
       <Navbar />
       <main className="bg-black pb-16 md:pb-0 min-h-screen">
@@ -31,6 +33,5 @@ function App() {
     </>
   );
 }
-
 
 export default App;
