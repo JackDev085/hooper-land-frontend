@@ -13,6 +13,24 @@ import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import BottomNav from "./components/layout/BottomNav";
 
+import { registerSW } from 'virtual:pwa-register';
+
+// Registra e força a atualização automática do Service Worker do PWA
+const updateSW = registerSW({
+  immediate: true,
+  onNeedRefresh() {
+    console.log("Nova versão do Ballers085 PWA detectada. Recarregando...");
+    updateSW(true);
+  },
+});
+
+// Verifica novas versões toda vez que o usuário abre/retorna ao app no celular
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    updateSW();
+  }
+});
+
 // Captura erros de chunk load e força recarregamento do app para trazer a versão nova do deploy
 window.addEventListener("error", (e) => {
   const isChunkError = e.message && (

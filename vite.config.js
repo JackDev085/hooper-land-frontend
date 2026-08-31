@@ -15,6 +15,8 @@ export default defineConfig({
         enabled: true
       },
       workbox: {
+        skipWaiting: true,
+        clientsClaim: true,
         importScripts: ['/sw-push.js'],
         // Não pre-cache imagens pesadas — deixa o browser cuidar do cache
         globPatterns: ['**/*.{js,css,html,svg,woff2}'],
