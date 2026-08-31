@@ -36,6 +36,12 @@ export default function WorkoutList({ workouts = [], loading = false, error = nu
   }
 
   if (isGrouped) {
+    const isPro = (w) => {
+      const isImpulsao = w.name?.toLowerCase().includes("impuls");
+      const isNeuro = w.id === 999 || w.slug === "neuro-cognition";
+      return Boolean(w.premium || isImpulsao || isNeuro);
+    };
+
     // Agrupa treinos por categoria
     const grouped = workouts.reduce((acc, workout) => {
       const cat = (workout.category || "outros").toLowerCase();
@@ -44,10 +50,23 @@ export default function WorkoutList({ workouts = [], loading = false, error = nu
       return acc;
     }, {});
 
-    // Filtra categorias que têm pelo menos um treino correspondente
+    // Ordena treinos em cada categoria com os PRO primeiro
+    Object.keys(grouped).forEach(catKey => {
+      grouped[catKey].sort((a, b) => (isPro(b) ? 1 : 0) - (isPro(a) ? 1 : 0));
+    });
+
+    // Filtra e ordena categorias para exibir primeiro aquelas que contêm treinos PRO
     const activeCategories = Object.keys(grouped).filter(cat => grouped[cat].length > 0);
+    activeCategories.sort((a, b) => {
+      const aHasPro = grouped[a].some(isPro);
+      const bHasPro = grouped[b].some(isPro);
+      if (aHasPro && !bHasPro) return -1;
+      if (!aHasPro && bHasPro) return 1;
+      return 0;
+    });
 
     return (
+
       <div className="space-y-12">
         {activeCategories.map((catKey) => {
           const label = CATEGORY_LABELS[catKey] || catKey.toUpperCase();

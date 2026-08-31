@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useState, useEffect } from "react";
-import { Heart, Menu, X, Download } from "lucide-react";
+import { Heart, Menu, X, Download, Crown } from "lucide-react";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -65,23 +65,49 @@ export default function Navbar() {
         }
       `}
     >
-      {/* Logo */}
-      <Link to="/" className="tracking-wide uppercase group">
-        <picture>
-          <source srcSet="/logo.webp" type="image/webp" />
-          <img
-            className="h-10 w-10 transition-transform group-hover:scale-105 md:h-14 md:w-14"
-            src="/logo-test.png"
-            alt="Ballers085"
-            width={160}
-            height={56}
-            fetchPriority="high"
-          />
-        </picture>
-      </Link>
+      {/* Logo + PRO badge */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        <Link to="/" className="tracking-wide uppercase group flex items-center gap-2">
+          <picture>
+            <source srcSet="/logo.webp" type="image/webp" />
+            <img
+              className="h-10 w-10 transition-transform group-hover:scale-105 md:h-14 md:w-14"
+              src="/logo-test.png"
+              alt="Ballers085"
+              width={160}
+              height={56}
+              fetchPriority="high"
+            />
+          </picture>
+        </Link>
+
+        {user?.premium && (
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600 text-black font-black text-[10px] md:text-xs uppercase tracking-wider shadow-[0_0_15px_rgba(245,158,11,0.6)] border border-amber-300">
+            <Crown size={12} className="fill-black" />
+            PRO
+          </span>
+        )}
+      </div>
 
       {/* Desktop Links */}
       <nav className="hidden md:flex items-center gap-8 text-base">
+        {user?.premium ? (
+          <Link
+            to="/premium"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/40 text-amber-400 font-extrabold text-xs uppercase tracking-wider hover:bg-amber-500/20 transition-all shadow-[0_0_10px_rgba(245,158,11,0.2)]"
+          >
+            <Crown size={14} className="text-amber-400 fill-amber-400" />
+            Membro PRO
+          </Link>
+        ) : (
+          <Link
+            to="/premium"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs uppercase tracking-wider shadow-glow hover:scale-105 transition-all"
+          >
+            <Crown size={14} className="text-amber-200 fill-amber-200" />
+            Premium
+          </Link>
+        )}
         <Link to="/support" className={navLinkClasses("/support")}>
           Apoie
         </Link>
@@ -162,13 +188,21 @@ export default function Navbar() {
             <div className="p-6 bg-black">
               {/* Header */}
               <div className=" flex items-center justify-between mb-8">
-                <Link
-                  to="/"
-                  onClick={() => setOpen(false)}
-                  className="tracking-wide uppercase"
-                >
-                  <img className="h-8" src="/logo192.png" alt="logo" />
-                </Link>
+                <div className="flex items-center gap-2">
+                  <Link
+                    to="/"
+                    onClick={() => setOpen(false)}
+                    className="tracking-wide uppercase"
+                  >
+                    <img className="h-8" src="/logo192.png" alt="logo" />
+                  </Link>
+                  {user?.premium && (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500 text-black font-black text-[9px] uppercase tracking-wider border border-amber-300">
+                      <Crown size={10} className="fill-black" />
+                      PRO
+                    </span>
+                  )}
+                </div>
                 <button
                   aria-label="Fechar menu"
                   onClick={() => setOpen(false)}
@@ -180,6 +214,23 @@ export default function Navbar() {
 
               {/* Navigation links */}
               <nav id="mobile-menu" className="flex flex-col gap-1 ">
+                <Link
+                  onClick={() => setOpen(false)}
+                  to="/premium"
+                  className={`
+                    flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all duration-300
+                    ${user?.premium
+                      ? "bg-amber-500/10 text-amber-400 border border-amber-500/30"
+                      : location.pathname === "/premium"
+                        ? "bg-gradient-to-r from-orange-600 to-amber-600 text-white"
+                        : "bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 border border-amber-500/20"
+                    }
+                  `}
+                >
+                  <Crown size={20} className="text-amber-400 fill-amber-400" />
+                  {user?.premium ? "Membro PRO 👑" : "Seja Premium 👑"}
+                </Link>
+
                 <Link
                   onClick={() => setOpen(false)}
                   to="/support"

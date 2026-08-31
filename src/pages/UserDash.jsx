@@ -289,25 +289,40 @@ export default function UserDash() {
                   </span>
 
                   <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-4 text-white leading-none">
-                    PAINEL DE <span className="text-orange-500">EVOLUÇÃO</span> COMPLETO
+                    DASHBOARD DE <span className="text-orange-500">MÉTRICAS & EVOLUÇÃO</span>
                   </h2>
 
-                  <p className="text-zinc-450 text-xs sm:text-sm font-medium mb-8 leading-relaxed max-w-lg mx-auto">
-                    Obtenha uma visão analítica completa dos seus hábitos, estatísticas consolidadas de arremessos e comparações automáticas de desempenho ao longo do tempo. Registre suas atividades e faça upgrade a qualquer momento para desbloquear os gráficos!
+                  <p className="text-zinc-450 text-xs sm:text-sm font-medium mb-6 leading-relaxed max-w-lg mx-auto">
+                    O acompanhamento completo de estatísticas, gráficos de evolução de arremessos, hábitos e dados consolidados do atleta é um recurso exclusivo para membros **Premium**.
                   </p>
+
+                  <div className="bg-black/50 border border-zinc-800/80 rounded-2xl p-4 text-left max-w-md mx-auto mb-8 space-y-2 text-xs text-zinc-300">
+                    <div className="flex items-center gap-2 font-bold text-white">
+                      <Sparkles size={14} className="text-orange-500" /> Métricas e Gráficos de Arremesso e Jogos
+                    </div>
+                    <div className="flex items-center gap-2 font-bold text-white">
+                      <Sparkles size={14} className="text-orange-500" /> Acesso Antecipado a Novos Treinos Exclusivos
+                    </div>
+                    <div className="flex items-center gap-2 font-bold text-white">
+                      <Sparkles size={14} className="text-orange-500" /> Sugestão Direta de Novos Treinos para a Equipe
+                    </div>
+                    <div className="flex items-center gap-2 font-bold text-white">
+                      <Sparkles size={14} className="text-orange-500" /> Treinos de Impulsão e Neurocognição Pro
+                    </div>
+                  </div>
 
                   <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <button
-                      onClick={() => alert("Entre em contato com a equipe administrativa do Ballers085 para realizar o upgrade de seu plano para Premium!")}
-                      className="w-full sm:w-auto px-6 py-3 bg-orange-600 hover:bg-orange-500 text-black font-black uppercase text-xs rounded-xl transition duration-300 shadow-glow flex items-center justify-center gap-2 hover:-translate-y-0.5 cursor-pointer"
+                      onClick={() => navigate("/premium")}
+                      className="w-full sm:w-auto px-6 py-3.5 bg-orange-600 hover:bg-orange-500 text-white font-black uppercase text-xs rounded-xl transition duration-300 shadow-glow flex items-center justify-center gap-2 hover:-translate-y-0.5 cursor-pointer border-none"
                     >
-                      Fazer Upgrade para Premium <ChevronRight size={14} />
+                      Virar Premium Agora <ChevronRight size={14} />
                     </button>
                     <Link
-                      to="/support"
-                      className="w-full sm:w-auto px-6 py-3 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl border border-zinc-800 transition duration-300 flex items-center justify-center"
+                      to="/premium"
+                      className="w-full sm:w-auto px-6 py-3.5 bg-zinc-900 hover:bg-zinc-800 text-amber-400 font-bold text-xs rounded-xl border border-zinc-800 transition duration-300 flex items-center justify-center gap-1.5"
                     >
-                      Apoie o Projeto
+                      Conhecer Planos 👑
                     </Link>
                   </div>
                 </div>

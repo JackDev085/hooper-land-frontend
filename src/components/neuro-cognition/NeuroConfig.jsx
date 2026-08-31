@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ChevronLeft,
   Brain,
@@ -8,8 +9,11 @@ import {
   Volume2,
   Play,
   Check,
-  HelpCircle
+  HelpCircle,
+  Crown,
+  Lock
 } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
 export default function NeuroConfig({
   difficulty,
@@ -31,6 +35,40 @@ export default function NeuroConfig({
   startWorkoutFlow,
   onOpenTutorial
 }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [modalReason, setModalReason] = useState("");
+
+  const isPremium = user?.premium === true;
+
+  const handleSelectDifficulty = (key) => {
+    if ((key === "dificil" || key === "lenda") && !isPremium) {
+      setModalReason(`A dificuldade "${difficultySettings[key].label}" é exclusiva para membros Premium.`);
+      setShowPremiumModal(true);
+      return;
+    }
+    setDifficulty(key);
+  };
+
+  const handleToggleCustomInterval = () => {
+    if (!useCustomInterval && !isPremium) {
+      setModalReason("A alteração personalizada do tempo de intervalo entre dribles é exclusiva para membros Premium.");
+      setShowPremiumModal(true);
+      return;
+    }
+    setUseCustomInterval(!useCustomInterval);
+  };
+
+  const handleSelectDurationMode = (modeValue) => {
+    if (modeValue === "custom" && !isPremium) {
+      setModalReason("A duração personalizada da sessão é exclusiva para membros Premium.");
+      setShowPremiumModal(true);
+      return;
+    }
+    setDurationMode(modeValue);
+  };
+
   return (
     <div className="space-y-6 w-full animate-fade-in">
       {/* HEADER SECTION */}
@@ -51,9 +89,25 @@ export default function NeuroConfig({
               <h1 className="text-2xl md:text-3xl font-extrabold uppercase tracking-tight text-white">
                 Neurocognição
               </h1>
-              <span className="text-[10px] font-semibold bg-orange-600/20 text-orange-500 border border-orange-500/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                Fase de testes
-              </span>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-[10px] font-bold bg-orange-600/20 text-orange-400 border border-orange-500/30 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                  Treino de Elite
+                </span>
+                {!isPremium ? (
+                  <Link
+                    to="/premium"
+                    className="inline-flex items-center gap-1 text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full uppercase hover:bg-amber-500/20 transition-all"
+                  >
+                    <Crown size={11} />
+                    Virar PRO
+                  </Link>
+                ) : (
+                  <span className="inline-flex items-center gap-1 text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-0.5 rounded-full uppercase">
+                    <Crown size={11} className="fill-amber-300" />
+                    PRO ATIVO
+                  </span>
+                )}
+              </div>
             </div>
           </div>
           <div>
@@ -73,27 +127,43 @@ export default function NeuroConfig({
 
       {/* DIFICULDADE */}
       <div className="bg-surface border border-gray-800 rounded-2xl p-5 space-y-4">
-        <h2 className="text-base font-bold flex items-center gap-2 text-orange-500">
-          <Sliders size={16} />
-          Dificuldade do Treino
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="text-base font-bold flex items-center gap-2 text-orange-500">
+            <Sliders size={16} />
+            Dificuldade do Treino
+          </h2>
+          <span className="text-[10px] text-gray-400">Fácil & Médio (Grátis) | Difícil & Lenda (PRO)</span>
+        </div>
         <div className="grid grid-cols-2 gap-3">
-          {Object.entries(difficultySettings).map(([key, value]) => (
-            <button
-              key={key}
-              onClick={() => setDifficulty(key)}
-              className={`p-3 rounded-xl border text-left transition-all duration-300 cursor-pointer ${
-                difficulty === key
-                  ? "border-orange-500 bg-orange-600/10 text-white font-bold shadow-glow"
-                  : "border-gray-800 bg-black/40 text-gray-400 hover:border-gray-700"
-              }`}
-            >
-              <div className="text-xs">{value.label}</div>
-              <div className="text-[9px] text-gray-500 mt-1 line-clamp-1">
-                Intervalo: {(value.interval / 1000).toFixed(2)}s
-              </div>
-            </button>
-          ))}
+          {Object.entries(difficultySettings).map(([key, value]) => {
+            const isLocked = (key === "dificil" || key === "lenda") && !isPremium;
+            return (
+              <button
+                key={key}
+                onClick={() => handleSelectDifficulty(key)}
+                className={`p-3 rounded-xl border text-left transition-all duration-300 cursor-pointer relative ${
+                  difficulty === key
+                    ? "border-orange-500 bg-orange-600/10 text-white font-bold shadow-glow"
+                    : isLocked
+                    ? "border-gray-800 bg-black/60 text-gray-500 hover:border-orange-500/40"
+                    : "border-gray-800 bg-black/40 text-gray-400 hover:border-gray-700"
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="text-xs">{value.label}</div>
+                  {isLocked && (
+                    <span className="flex items-center gap-1 text-[9px] font-extrabold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded">
+                      <Lock size={10} />
+                      PRO
+                    </span>
+                  )}
+                </div>
+                <div className="text-[9px] text-gray-500 mt-1 line-clamp-1">
+                  Intervalo: {(value.interval / 1000).toFixed(2)}s
+                </div>
+              </button>
+            );
+          })}
         </div>
         <p className="text-xs text-gray-450 italic bg-black/40 p-2.5 rounded-lg border border-gray-800/40 leading-relaxed">
           {difficultySettings[difficulty].desc}
@@ -108,13 +178,14 @@ export default function NeuroConfig({
             Tempo de Troca (Intervalo)
           </h2>
           <button
-            onClick={() => setUseCustomInterval(!useCustomInterval)}
-            className={`px-2.5 py-1 rounded-lg border text-[10px] font-bold transition-all cursor-pointer ${
+            onClick={handleToggleCustomInterval}
+            className={`px-2.5 py-1 rounded-lg border text-[10px] font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
               useCustomInterval
                 ? "bg-orange-600/20 border-orange-500 text-orange-400 shadow-glow"
                 : "bg-black/30 border-gray-800 text-gray-500 hover:border-gray-700"
             }`}
           >
+            {!isPremium && <Lock size={11} className="text-amber-400" />}
             {useCustomInterval ? "Personalizado ⚡" : "Automático"}
           </button>
         </div>
@@ -164,20 +235,26 @@ export default function NeuroConfig({
             { value: "2", label: "2 min" },
             { value: "3", label: "3 min" },
             { value: "5", label: "5 min" },
-            { value: "custom", label: "Personalizado" }
-          ].map((mode) => (
-            <button
-              key={mode.value}
-              onClick={() => setDurationMode(mode.value)}
-              className={`px-3 py-2 rounded-xl border text-[10px] font-bold transition-all cursor-pointer ${
-                durationMode === mode.value
-                  ? "bg-orange-600 border-orange-600 text-white shadow-glow"
-                  : "bg-black/30 border-gray-800 text-gray-400 hover:border-gray-700"
-              }`}
-            >
-              {mode.label}
-            </button>
-          ))}
+            { value: "custom", label: "Personalizado 🔒" }
+          ].map((mode) => {
+            const isCustomLocked = mode.value === "custom" && !isPremium;
+            return (
+              <button
+                key={mode.value}
+                onClick={() => handleSelectDurationMode(mode.value)}
+                className={`px-3 py-2 rounded-xl border text-[10px] font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                  durationMode === mode.value
+                    ? "bg-orange-600 border-orange-600 text-white shadow-glow"
+                    : isCustomLocked
+                    ? "bg-black/40 border-gray-800 text-gray-500 hover:border-orange-500/40"
+                    : "bg-black/30 border-gray-800 text-gray-400 hover:border-gray-700"
+                }`}
+              >
+                {isCustomLocked && <Lock size={10} className="text-amber-400" />}
+                {mode.label}
+              </button>
+            );
+          })}
         </div>
 
         {durationMode === "custom" && (
@@ -287,6 +364,55 @@ export default function NeuroConfig({
         <Play size={18} fill="currentColor" />
         Iniciar Treinamento Cognitivo
       </button>
+
+      {/* MODAL DE DESBLOQUEIO PREMIUM */}
+      {showPremiumModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-surface border border-gray-800 rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-6 shadow-2xl text-center animate-fade-in">
+            <div className="w-16 h-16 rounded-full bg-orange-600/20 border border-orange-500/40 text-orange-500 mx-auto flex items-center justify-center shadow-glow">
+              <Crown size={32} />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-xl font-extrabold uppercase text-white">Recurso Premium 🔒</h3>
+              <p className="text-xs text-gray-300 leading-relaxed">
+                {modalReason}
+              </p>
+            </div>
+
+            <div className="bg-black/50 border border-gray-800 rounded-2xl p-4 text-xs text-gray-400 space-y-2 text-left">
+              <div className="flex items-center gap-2 text-white font-bold">
+                <Check size={14} className="text-orange-500" /> Dificuldades Difícil e Lenda
+              </div>
+              <div className="flex items-center gap-2 text-white font-bold">
+                <Check size={14} className="text-orange-500" /> Intervalo de troca totalmente customizado
+              </div>
+              <div className="flex items-center gap-2 text-white font-bold">
+                <Check size={14} className="text-orange-500" /> Todos os Treinos de Impulsão
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowPremiumModal(false)}
+                className="flex-1 py-3 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-xl font-bold text-xs cursor-pointer"
+              >
+                Continuar Grátis
+              </button>
+              <button
+                onClick={() => {
+                  setShowPremiumModal(false);
+                  navigate("/premium");
+                }}
+                className="flex-1 py-3 bg-orange-600 hover:bg-orange-500 text-white rounded-xl font-bold text-xs shadow-glow cursor-pointer flex items-center justify-center gap-1.5"
+              >
+                <Crown size={14} />
+                Seja Premium
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

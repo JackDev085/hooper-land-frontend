@@ -63,8 +63,25 @@ export default function useWorkouts({ category, searchQuery } = {}) {
         : true;
       return matchesCategory && matchesSearch;
     });
-    setFilteredWorkouts(filtered);
+
+    // Coloca os treinos PRO / Premium no topo da lista
+    const isPro = (w) => {
+      const isImpulsao = w.name?.toLowerCase().includes("impuls");
+      const isNeuro = w.id === 999 || w.slug === "neuro-cognition";
+      return Boolean(w.premium || isImpulsao || isNeuro);
+    };
+
+    const sorted = [...filtered].sort((a, b) => {
+      const aPro = isPro(a);
+      const bPro = isPro(b);
+      if (aPro && !bPro) return -1;
+      if (!aPro && bPro) return 1;
+      return 0;
+    });
+
+    setFilteredWorkouts(sorted);
   }, [category, workouts, searchQuery]);
+
 
   return { workouts, filteredWorkouts, loading, error };
 }

@@ -41,6 +41,7 @@ const Terms = lazy(() => import("./pages/Terms.jsx"));
 const Admin = lazy(() => import("./pages/Admin.jsx"));
 const NotFound = lazy(() => import("./pages/NotFound.jsx"));
 const UserDash = lazy(() => import("./pages/UserDash.jsx"));
+const Premium = lazy(() => import("./pages/Premium.jsx"));
 
 // Fallback mínimo para Suspense (CSS spinner, sem GIF pesado)
 function PageLoader() {
@@ -174,6 +175,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<PageLoader />}>
             <Donate />
+          </Suspense>
+        ),
+      },
+      {
+        path: "premium",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <Premium />
           </Suspense>
         ),
       },
