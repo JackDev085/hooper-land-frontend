@@ -28,9 +28,10 @@ api.interceptors.response.use(
       window.location.pathname !== "/auth"
     ) {
       localStorage.removeItem("token");
+      localStorage.removeItem("user_data");
       window.location.href = "/auth"; // Redireciona para a página de login, exceto se já estiver em /auth
     }
     return Promise.reject(error);
-  }
+  },
 );
 export default api;

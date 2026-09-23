@@ -1,19 +1,35 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Clock, ChevronRight, Crown, Lock } from "lucide-react";
+import { Clock, ChevronRight, Lock } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 export default function WorkoutCard({ workout }) {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const navigate = useNavigate();
 
   const isNeuro = workout.id === 999 || workout.slug === "neuro-cognition";
   const isImpulsao = workout.name?.toLowerCase().includes("impuls");
+  const isPivo = workout.name?.toLowerCase().includes("piv");
   // Treino de neurocognição é liberado para todos (apenas dificuldades avançadas são travadas internamente)
-  const isPremiumWorkout = (workout.premium || isImpulsao) && !isNeuro;
+  const isPremiumWorkout =
+    (workout.premium || isImpulsao || isPivo) && !isNeuro;
 
-  const handleCardClick = (e) => {
+  const handleCardClick = async (e) => {
     if (isPremiumWorkout && !user?.premium) {
       e.preventDefault();
+      // Se possui login ativo, sincroniza para verificar se já foi ativado como PRO
+      if (localStorage.getItem("token") && refreshUser) {
+        try {
+          const freshUser = await refreshUser();
+          if (freshUser?.premium) {
+            navigate(
+              isNeuro ? "/neuro-cognition" : `/exercises?treino=${workout.id}`,
+            );
+            return;
+          }
+        } catch {
+          // Prossegue para /premium
+        }
+      }
       navigate("/premium");
     }
   };
@@ -32,24 +48,27 @@ export default function WorkoutCard({ workout }) {
       {/* Image with overlay */}
       <div className="relative h-56 overflow-hidden">
         <img
-          src={isNeuro ? "/neurocognition.png" : `https://i.ytimg.com/vi/${workout.slug}/mqdefault.jpg`}
+          src={
+            isNeuro
+              ? "/neurocognition.png"
+              : `https://i.ytimg.com/vi/${workout.slug}/hqdefault.jpg`
+          }
           alt={workout.name}
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-500" />
 
-        {/* Premium Badge (PRO) */}
+        {/* Subtle PRO Badge */}
         {(isPremiumWorkout || isNeuro) && (
-          <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 bg-orange-600/90 backdrop-blur-md rounded-full text-xs font-black text-white shadow-glow border border-orange-400/40 uppercase tracking-wider">
-            <Crown size={13} className="text-amber-300 fill-amber-300" />
+          <div className="absolute  top-3.5 left-3.5 px-2.5 py-1 bg-black/75 backdrop-blur-md rounded-md text-[10px] font-semibold text-yellow-400 border border-zinc-700/80 uppercase tracking-wider">
             PRO
           </div>
         )}
 
         {/* Duration badge */}
         {workout.duration && (
-          <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 bg-black/60 backdrop-blur-sm rounded-full text-xs font-medium text-gray-200">
+          <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 px-2.5 py-1 bg-black/60 backdrop-blur-sm rounded-md text-[10px] font-medium text-gray-300">
             <Clock size={12} />
             {workout.duration}
           </div>
@@ -65,24 +84,26 @@ export default function WorkoutCard({ workout }) {
         <div
           className={`
             inline-flex items-center gap-2 
-            px-5 py-2.5 
-            ${isPremiumWorkout && !user?.premium ? "bg-orange-950/80 border border-orange-500/50 text-orange-400" : "bg-orange-600 group-hover:bg-orange-500 text-white"} 
-            rounded-xl font-semibold text-sm
+            px-4 py-2 rounded-xl text-xs font-semibold
             transition-all duration-300
-            group-hover:shadow-glow
+            ${
+              isPremiumWorkout && !user?.premium
+                ? "bg-orange-600 group-hover:bg-orange-500 text-white group-hover:shadow-glow"
+                : "bg-zinc-900 border border-zinc-700/80 text-zinc-300 group-hover:border-zinc-500 group-hover:text-white"
+            } 
           `}
         >
           {isPremiumWorkout && !user?.premium ? (
             <>
-              <Lock size={15} />
-              Desbloquear com Premium
+              <Lock size={13} className="text-white-400" />
+              Desbloquear
             </>
           ) : (
             <>
               Treinar agora
               <ChevronRight
-                size={16}
-                className="transition-transform duration-300 group-hover:translate-x-1"
+                size={14}
+                className="transition-transform duration-300 group-hover:translate-x-0.5"
               />
             </>
           )}
@@ -90,5 +111,4 @@ export default function WorkoutCard({ workout }) {
       </div>
     </Link>
   );
-
 }

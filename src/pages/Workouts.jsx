@@ -1,5 +1,16 @@
 import { useState } from "react";
-import { Home, Dumbbell, MapPin, TreeDeciduous, Search, X, Layers, Lightbulb, Crown, Sparkles } from "lucide-react";
+import {
+  Home,
+  Dumbbell,
+  MapPin,
+  TreeDeciduous,
+  Search,
+  X,
+  Layers,
+  Lightbulb,
+  Crown,
+  Sparkles,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import useWorkouts from "../hooks/useWorkouts.js";
 import WorkoutList from "../components/ui/WorkoutList.jsx";
@@ -23,7 +34,7 @@ export default function Workouts() {
 
   const { filteredWorkouts, loading, error } = useWorkouts({
     category: activeCategory,
-    searchQuery
+    searchQuery,
   });
 
   const handleSuggestClick = () => {
@@ -41,33 +52,38 @@ export default function Workouts() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-gray-800/80 pb-8">
           <div>
             <div className="flex items-center gap-2 mb-2">
+              {/* 
+                
+              
               <span className="text-orange-500 font-bold uppercase tracking-widest text-xs">
                 Treinamento de Elite
               </span>
               <span className="px-2.5 py-0.5 bg-amber-500/10 text-amber-400 text-[10px] font-black rounded-full border border-amber-500/20 uppercase tracking-widest flex items-center gap-1">
                 <Crown size={11} /> Acesso Antecipado PRO
               </span>
+                */}
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold uppercase tracking-tight">
               Treinos
             </h1>
             <p className="text-gray-400 text-sm md:text-base mt-1">
-              Escolha uma categoria, prepare seu foco e eleve seu nível em quadra.
+              Escolha uma categoria, prepare seu foco e eleve seu nível em
+              quadra.
             </p>
           </div>
 
           <div>
             <button
               onClick={handleSuggestClick}
-              className="px-5 py-3 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all shadow-glow hover:scale-105 flex items-center gap-2 cursor-pointer border-none"
+              className="px-5 py-3 bg-gradient-to-b from-blue-400 to-blue-500 hover:from-blue-400 hover:to-blue-500 text-white font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all shadow-glow hover:scale-105 flex items-center gap-2 cursor-pointer border-none"
             >
               <Lightbulb size={16} />
-              {user?.premium ? "Sugerir Novo Treino 💡" : "Sugerir Treino (Premium 👑)"}
+              {user?.premium ? "Sugerir Novo Treino 💡" : "Sugerir Treino 👑"}
             </button>
           </div>
+          {/* 
         </div>
-
-        {/* Banner Acesso Antecipado */}
+        Banner Acesso Antecipado
         <div className="bg-gradient-to-r from-orange-950/40 via-surface to-black border border-orange-500/20 rounded-2xl p-5 mb-10 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-lg">
           <div className="flex items-center gap-3">
             <div className="p-3 bg-orange-600/20 rounded-xl text-orange-400 border border-orange-500/30 shrink-0">
@@ -78,7 +94,8 @@ export default function Workouts() {
                 Lançamentos & Acesso Antecipado
               </h2>
               <p className="text-xs text-gray-400 mt-0.5">
-                Membros Premium testam e acessam treinos exclusivos de velocidade, impulsão e arremessos antes de todos!
+                Membros Premium testam e acessam treinos exclusivos de
+                velocidade, impulsão e arremessos antes de todos!
               </p>
             </div>
           </div>
@@ -90,8 +107,8 @@ export default function Workouts() {
               Virar PRO
             </Link>
           )}
+            */}
         </div>
-
         {/* Filters & Search section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           {/* Category filters */}
@@ -110,9 +127,10 @@ export default function Workouts() {
                     px-5 py-3 rounded-xl
                     font-semibold text-sm
                     border-2 transition-all duration-300 flex-shrink-0
-                    ${isActive
-                      ? "bg-orange-600 border-orange-600 text-white shadow-glow"
-                      : "bg-transparent border-gray-700 text-gray-400 hover:border-orange-500/50 hover:text-white"
+                    ${
+                      isActive
+                        ? "bg-orange-600 border-orange-600 text-white shadow-glow"
+                        : "bg-transparent border-gray-700 text-gray-400 hover:border-orange-500/50 hover:text-white"
                     }
                   `}
                 >
@@ -150,7 +168,6 @@ export default function Workouts() {
             )}
           </div>
         </div>
-
         {/* Workouts container */}
         <div className="w-full">
           <WorkoutList

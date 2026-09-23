@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 import { Users, Dumbbell, PlusCircle, Trash, Check, X, Shield, Star, ShieldAlert, Crown, Clock, Lightbulb, Search } from "lucide-react";
 
 export default function Admin() {
+  const { user, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState("users");
 
   // Estados de dados
@@ -92,6 +94,9 @@ export default function Admin() {
         premium_plan_months: months
       });
       setUsers(users.map(u => u.username === username ? res.data : u));
+      if (username === user?.username) {
+        updateUser(res.data);
+      }
     } catch (err) {
       console.error("Erro ao alterar premium:", err);
       alert("Erro ao alterar status premium do usuário.");

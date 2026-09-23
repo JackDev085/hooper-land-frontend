@@ -10,7 +10,7 @@ import {
   Sparkles,
   ChevronRight,
   AlertCircle,
-  CheckCircle2
+  CheckCircle2,
 } from "lucide-react";
 import api from "../services/api";
 
@@ -36,7 +36,9 @@ export default function UserDash() {
   const navigate = useNavigate();
 
   // Tabs: 'dashboard' | 'journal' | 'games' | 'goals'
-  const [activeTab, setActiveTab] = useState(user?.premium ? "dashboard" : "journal");
+  const [activeTab, setActiveTab] = useState(
+    user?.premium ? "dashboard" : "journal",
+  );
   const [loading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState(null);
   const [daysFilter, setDaysFilter] = useState(30);
@@ -65,8 +67,8 @@ export default function UserDash() {
         consistency: {
           workouts_this_month: 0,
           weekly_frequency: 0,
-          streak: 0
-        }
+          streak: 0,
+        },
       });
       setRecentGames([]);
       setCompetitionsList([]);
@@ -85,8 +87,8 @@ export default function UserDash() {
           consistency: {
             workouts_this_month: 0,
             weekly_frequency: 0,
-            streak: 0
-          }
+            streak: 0,
+          },
         });
       }
 
@@ -171,7 +173,9 @@ export default function UserDash() {
 
   const handleOpenJournalModal = () => {
     if (!user) {
-      alert("Faça login para registrar suas atividades e acompanhar sua evolução!");
+      alert(
+        "Faça login para registrar suas atividades e acompanhar sua evolução!",
+      );
       navigate("/auth");
       return;
     }
@@ -180,7 +184,9 @@ export default function UserDash() {
 
   const handleOpenGameModal = () => {
     if (!user) {
-      alert("Faça login para registrar suas partidas e acompanhar suas estatísticas!");
+      alert(
+        "Faça login para registrar suas partidas e acompanhar suas estatísticas!",
+      );
       navigate("/auth");
       return;
     }
@@ -189,7 +195,6 @@ export default function UserDash() {
 
   return (
     <div className="min-h-screen bg-black text-white p-6 md:p-12 pt-28 selection:bg-orange-500 selection:text-black">
-
       {/* Alert Messages */}
       {successMsg && (
         <div className="fixed top-24 right-6 z-50 bg-emerald-950/90 border border-emerald-500/40 text-emerald-300 px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 animate-fade-in backdrop-blur-lg">
@@ -205,7 +210,6 @@ export default function UserDash() {
       )}
 
       <div className="max-w-6xl w-full mx-auto flex flex-col gap-8">
-
         {/* Header Title & Tab Switcher */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-zinc-800 pb-6">
           <div>
@@ -221,29 +225,39 @@ export default function UserDash() {
               Evolução do <span className="text-orange-500">Atleta</span>
             </h1>
             <p className="text-zinc-400 text-sm mt-2 font-medium">
-              Diário de hábitos, metas de performance e estatísticas de jogo integradas em um painel interativo.
+              Diário de hábitos, metas de performance e estatísticas de jogo
+              integradas em um painel interativo.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-1 bg-zinc-950 p-1 rounded-2xl border border-zinc-900">
             <button
               onClick={() => setActiveTab("dashboard")}
-              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-2 ${activeTab === "dashboard" ? "bg-orange-600 text-black shadow-glow" : "text-zinc-400 hover:text-white"
-                }`}
+              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-2 ${
+                activeTab === "dashboard"
+                  ? "bg-orange-600 text-black shadow-glow"
+                  : "text-zinc-400 hover:text-white"
+              }`}
             >
               <TrendingUp size={14} /> Dashboard
             </button>
             <button
               onClick={() => setActiveTab("journal")}
-              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-2 ${activeTab === "journal" ? "bg-orange-600 text-black shadow-glow" : "text-zinc-400 hover:text-white"
-                }`}
+              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-2 ${
+                activeTab === "journal"
+                  ? "bg-orange-600 text-black shadow-glow"
+                  : "text-zinc-400 hover:text-white"
+              }`}
             >
               <Calendar size={14} /> Diário
             </button>
             <button
               onClick={() => setActiveTab("games")}
-              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-2 ${activeTab === "games" ? "bg-orange-600 text-black shadow-glow" : "text-zinc-400 hover:text-white"
-                }`}
+              className={`px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer flex items-center gap-2 ${
+                activeTab === "games"
+                  ? "bg-orange-600 text-black shadow-glow"
+                  : "text-zinc-400 hover:text-white"
+              }`}
             >
               <Trophy size={14} /> Estatísticas
             </button>
@@ -256,7 +270,7 @@ export default function UserDash() {
                 >
               <Target size={14} /> Metas
             </button>
-           */ }
+           */}
           </div>
         </div>
 
@@ -265,7 +279,9 @@ export default function UserDash() {
           <div className="flex min-h-[50vh] justify-center items-center">
             <div className="flex flex-col items-center gap-3">
               <div className="w-10 h-10 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin"></div>
-              <span className="text-zinc-500 text-xs font-bold uppercase tracking-widest">Carregando painel do atleta...</span>
+              <span className="text-zinc-500 text-xs font-bold uppercase tracking-widest">
+                Carregando painel do atleta...
+              </span>
             </div>
           </div>
         )}
@@ -273,8 +289,8 @@ export default function UserDash() {
         {/* Tab Contents */}
         {!loading && dashboardData && (
           <>
-            {activeTab === "dashboard" && (
-              !user?.premium ? (
+            {activeTab === "dashboard" &&
+              (!user?.premium ? (
                 <div className="bg-zinc-950/85 border border-zinc-800/80 p-8 md:p-12 rounded-3xl backdrop-blur-xl shadow-2xl relative overflow-hidden text-center max-w-2xl mx-auto w-full mt-4">
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-red-500 to-yellow-500" />
 
@@ -284,30 +300,45 @@ export default function UserDash() {
                     </div>
                   </div>
 
+                  {/* 
+
                   <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-widest bg-orange-500/10 text-orange-400 border border-orange-500/20 mb-6">
-                    <Sparkles size={12} className="fill-orange-400" /> Dashboard de Evolução Premium
+                    <Sparkles size={12} className="fill-orange-400" /> Dashboard
+                    de Evolução
                   </span>
+   */}
 
                   <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-4 text-white leading-none">
-                    DASHBOARD DE <span className="text-orange-500">MÉTRICAS & EVOLUÇÃO</span>
+                    DASHBOARD DE{" "}
+                    <span className="text-orange-500">MÉTRICAS & EVOLUÇÃO</span>
                   </h2>
 
                   <p className="text-zinc-450 text-xs sm:text-sm font-medium mb-6 leading-relaxed max-w-lg mx-auto">
-                    O acompanhamento completo de estatísticas, gráficos de evolução de arremessos, hábitos e dados consolidados do atleta é um recurso exclusivo para membros **Premium**.
+                    O acompanhamento completo de estatísticas, gráficos de
+                    evolução de arremessos, hábitos e dados consolidados do
+                    atleta é um recurso exclusivo para membros{" "}
+                    <strong className="text-orange-500 underline">
+                      Ballers085 Pro
+                    </strong>
+                    .
                   </p>
 
                   <div className="bg-black/50 border border-zinc-800/80 rounded-2xl p-4 text-left max-w-md mx-auto mb-8 space-y-2 text-xs text-zinc-300">
                     <div className="flex items-center gap-2 font-bold text-white">
-                      <Sparkles size={14} className="text-orange-500" /> Métricas e Gráficos de Arremesso e Jogos
+                      <Sparkles size={14} className="text-orange-500" />{" "}
+                      Estatísticas de Treinos, Jogos e Evolução de Habilidades
                     </div>
                     <div className="flex items-center gap-2 font-bold text-white">
-                      <Sparkles size={14} className="text-orange-500" /> Acesso Antecipado a Novos Treinos Exclusivos
+                      <Sparkles size={14} className="text-orange-500" /> Acesso
+                      Quantitativo de ingestão de agua, sono, treinos e hábitos
                     </div>
                     <div className="flex items-center gap-2 font-bold text-white">
-                      <Sparkles size={14} className="text-orange-500" /> Sugestão Direta de Novos Treinos para a Equipe
+                      <Sparkles size={14} className="text-orange-500" />{" "}
+                      Gráficos de Evolução de Arremessos, Impulsão e Velocidade
                     </div>
                     <div className="flex items-center gap-2 font-bold text-white">
-                      <Sparkles size={14} className="text-orange-500" /> Treinos de Impulsão e Neurocognição Pro
+                      <Sparkles size={14} className="text-orange-500" /> E muito
+                      mais ...
                     </div>
                   </div>
 
@@ -340,8 +371,7 @@ export default function UserDash() {
                     setActiveTab={setActiveTab}
                   />
                 </div>
-              )
-            )}
+              ))}
 
             {activeTab === "journal" && (
               <JournalTab
@@ -417,7 +447,6 @@ export default function UserDash() {
           onClose={() => setSelectedGoalDetail(null)}
         />
         */}
-
       </div>
     </div>
   );

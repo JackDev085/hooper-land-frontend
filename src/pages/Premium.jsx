@@ -1,6 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Crown, Check, QrCode, Copy, CheckCircle2, MessageCircle, Instagram, ArrowRight, Sparkles, TrendingUp, Lightbulb, X, ShieldCheck } from "lucide-react";
+import {
+  Crown,
+  Check,
+  QrCode,
+  Copy,
+  CheckCircle2,
+  MessageCircle,
+  Instagram,
+  ArrowRight,
+  Sparkles,
+  TrendingUp,
+  Lightbulb,
+  X,
+  ShieldCheck,
+} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 export default function Premium() {
@@ -68,7 +82,7 @@ export default function Premium() {
 
   const getWhatsappUrl = (plan) => {
     const username = user?.username || "seu_usuario";
-    const text = `Oi! Realizei o pagamento PIX do Ballers085 Premium (${plan ? plan.name + ' - ' + plan.price : 'Plano'}). Meu usuário é: @${username}`;
+    const text = `Oi! Realizei o pagamento PIX do Ballers085 Premium (${plan ? plan.name + " - " + plan.price : "Plano"}). Meu usuário é: @${username}`;
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
   };
 
@@ -81,15 +95,18 @@ export default function Premium() {
 
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-600/10 border border-orange-500/30 text-orange-400 text-xs font-bold uppercase tracking-wider">
             <Crown size={14} className="text-orange-500 fill-orange-500" />
-            Seja Ballers085 Premium
+            Seja Ballers085 Pro
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white leading-tight">
-            Eleve seu nível no basquete com <span className="text-orange-500">Recursos Exclusivos</span>
+            Eleve seu nível no basquete com{" "}
+            <span className="text-orange-500">Recursos Exclusivos</span>
           </h1>
 
           <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
-            Desbloqueie o Dashboard completo de evolução do atleta, treinos de impulsão, sugestão direta de treinos e acesso antecipado a novos lançamentos.
+            Desbloqueie o Dashboard completo de evolução do atleta, treino de
+            impulsão, treino de pivô, sugestão direta de treinos e acesso
+            antecipado a novos lançamentos.
           </p>
 
           {/* STATUS ATUAL DO USUÁRIO */}
@@ -100,12 +117,20 @@ export default function Premium() {
                   <Crown size={22} className="fill-amber-300" />
                 </div>
                 <div>
-                  <h3 className="font-extrabold text-base text-white">Sua assinatura Premium está ATIVA! ✨</h3>
+                  <h3 className="font-extrabold text-base text-white">
+                    Sua assinatura Premium está ATIVA! ✨
+                  </h3>
                   <p className="text-xs text-orange-300/80">
-                    Comprado em: <span className="font-mono text-white">{user.premium_purchased_at || "Recente"}</span>
+                    Comprado em:{" "}
+                    <span className="font-mono text-white">
+                      {user.premium_purchased_at || "Recente"}
+                    </span>
                   </p>
                   <p className="text-xs text-orange-300/80">
-                    Válido até: <span className="font-mono text-white font-bold">{user.premium_expires_at || "Ativo"}</span>
+                    Válido até:{" "}
+                    <span className="font-mono text-white font-bold">
+                      {user.premium_expires_at || "Ativo"}
+                    </span>
                   </p>
                 </div>
               </div>
@@ -119,9 +144,12 @@ export default function Premium() {
             <div className="w-12 h-12 rounded-xl bg-orange-600/10 border border-orange-500/20 flex items-center justify-center text-orange-500">
               <TrendingUp size={24} />
             </div>
-            <h3 className="font-bold text-lg text-white">Dashboard de Métricas</h3>
+            <h3 className="font-bold text-lg text-white">
+              Dashboard de Métricas
+            </h3>
             <p className="text-xs text-gray-400 leading-relaxed">
-              Gráficos completos de taxa de acerto de arremessos, histórico de partidas e hábitos dos atletas.
+              Gráficos completos de taxa de acerto de arremessos, histórico de
+              partidas e hábitos dos atletas.
             </p>
           </div>
 
@@ -131,7 +159,7 @@ export default function Premium() {
             </div>
             <h3 className="font-bold text-lg text-white">Acesso Antecipado</h3>
             <p className="text-xs text-gray-400 leading-relaxed">
-              Experimente novos programas de treino, séries de impulsão e ferramentas antes do lançamento geral.
+              Experimente novos treinos e recursos antes de todos.
             </p>
           </div>
 
@@ -139,9 +167,12 @@ export default function Premium() {
             <div className="w-12 h-12 rounded-xl bg-purple-600/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
               <Lightbulb size={24} />
             </div>
-            <h3 className="font-bold text-lg text-white">Sugerir Novos Treinos</h3>
+            <h3 className="font-bold text-lg text-white">
+              Sugerir Novos Treinos
+            </h3>
             <p className="text-xs text-gray-400 leading-relaxed">
-              Envie sugestões diretas de rotinas e exercícios para a equipe técnica criar e publicar na plataforma.
+              Envie sugestões diretas de rotinas e exercícios para a equipe
+              técnica criar e publicar na plataforma.
             </p>
           </div>
         </div>
@@ -149,8 +180,12 @@ export default function Premium() {
         {/* PLANOS E PREÇOS */}
         <div className="space-y-6">
           <div className="text-center space-y-2">
-            <h2 className="text-2xl font-black uppercase tracking-tight">Escolha o seu plano de acesso</h2>
-            <p className="text-xs text-gray-400">Pagamento instantâneo via PIX (QR Code ou Chave Aleatória)</p>
+            <h2 className="text-2xl font-black uppercase tracking-tight">
+              Escolha o seu plano de acesso
+            </h2>
+            <p className="text-xs text-gray-400">
+              Pagamento instantâneo via PIX (QR Code ou Chave Aleatória)
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
@@ -165,7 +200,9 @@ export default function Premium() {
               >
                 {/* BADGE DO PLANO */}
                 <div className="flex items-center justify-between mb-4">
-                  <span className={`px-3 py-1 rounded-full text-[10px] font-bold border ${plan.badgeColor}`}>
+                  <span
+                    className={`px-3 py-1 rounded-full text-[10px] font-bold border ${plan.badgeColor}`}
+                  >
                     {plan.badge}
                   </span>
                   {plan.savings && (
@@ -178,8 +215,12 @@ export default function Premium() {
                 <div className="space-y-4 mb-6">
                   <h3 className="text-xl font-bold text-white">{plan.name}</h3>
                   <div>
-                    <div className="text-3xl font-black text-white">{plan.price}</div>
-                    <div className="text-xs text-gray-400 mt-0.5">{plan.perMonth}</div>
+                    <div className="text-3xl font-black text-white">
+                      {plan.price}
+                    </div>
+                    <div className="text-xs text-gray-400 mt-0.5">
+                      {plan.perMonth}
+                    </div>
                   </div>
 
                   <ul className="space-y-2.5 pt-2 text-xs text-gray-300 border-t border-gray-800/80">
@@ -258,8 +299,12 @@ export default function Premium() {
               <span className="px-3 py-1 bg-orange-600/10 border border-orange-500/30 text-orange-400 text-[10px] font-extrabold rounded-full uppercase tracking-wider">
                 {selectedPlan.name} — {selectedPlan.price}
               </span>
-              <h3 className="font-extrabold text-2xl text-white">Pagamento via PIX ⚡</h3>
-              <p className="text-xs text-gray-400">Escaneie o QR Code abaixo ou copie a chave aleatória</p>
+              <h3 className="font-extrabold text-2xl text-white">
+                Pagamento via PIX ⚡
+              </h3>
+              <p className="text-xs text-gray-400">
+                Escaneie o QR Code abaixo ou copie a chave aleatória
+              </p>
             </div>
 
             {/* Imagem do QR Code */}
@@ -314,13 +359,20 @@ export default function Premium() {
               </h4>
               <ol className="space-y-2 list-decimal list-inside text-gray-300 leading-relaxed">
                 <li>
-                  Realize o PIX de <strong className="text-white">{selectedPlan.price}</strong> usando o QR Code ou a Chave acima.
+                  Realize o PIX de{" "}
+                  <strong className="text-white">{selectedPlan.price}</strong>{" "}
+                  usando o QR Code ou a Chave acima.
                 </li>
                 <li>
-                  Envie a foto do comprovante informando o seu usuário (<strong className="text-orange-400 font-mono">@{user?.username}</strong>).
+                  Envie a foto do comprovante informando o seu usuário (
+                  <strong className="text-orange-400 font-mono">
+                    @{user?.username}
+                  </strong>
+                  ).
                 </li>
                 <li>
-                  Após enviar o comprovante no WhatsApp ou Instagram, a equipe ativa seu acesso PRO no painel!
+                  Após enviar o comprovante no WhatsApp ou Instagram, a equipe
+                  ativa seu acesso PRO no painel!
                 </li>
               </ol>
             </div>

@@ -38,8 +38,9 @@ export default function WorkoutList({ workouts = [], loading = false, error = nu
   if (isGrouped) {
     const isPro = (w) => {
       const isImpulsao = w.name?.toLowerCase().includes("impuls");
+      const isPivo = w.name?.toLowerCase().includes("piv");
       const isNeuro = w.id === 999 || w.slug === "neuro-cognition";
-      return Boolean(w.premium || isImpulsao || isNeuro);
+      return Boolean(w.premium || isImpulsao || isPivo || isNeuro);
     };
 
     // Agrupa treinos por categoria

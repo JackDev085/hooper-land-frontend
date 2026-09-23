@@ -22,10 +22,12 @@ export default function useWorkouts({ category, searchQuery } = {}) {
           duration: "Ajustável",
           category: "Livre",
           slug: "neuro-cognition",
-          premium: true
+          premium: true,
         };
 
-        if (!apiData.some(w => w.id === 999 || w.slug === "neuro-cognition")) {
+        if (
+          !apiData.some((w) => w.id === 999 || w.slug === "neuro-cognition")
+        ) {
           apiData = [neuroWorkout, ...apiData];
         }
 
@@ -40,7 +42,7 @@ export default function useWorkouts({ category, searchQuery } = {}) {
             duration: "Ajustável",
             category: "Livre",
             slug: "neuro-cognition",
-            premium: true
+            premium: true,
           },
         ];
         setWorkouts(localFallbacks);
@@ -55,9 +57,10 @@ export default function useWorkouts({ category, searchQuery } = {}) {
 
   useEffect(() => {
     const filtered = workouts.filter((workout) => {
-      const matchesCategory = category && category.toLowerCase() !== "todos"
-        ? workout.category.toLowerCase() === category.toLowerCase()
-        : true;
+      const matchesCategory =
+        category && category.toLowerCase() !== "todos"
+          ? workout.category.toLowerCase() === category.toLowerCase()
+          : true;
       const matchesSearch = searchQuery
         ? workout.name.toLowerCase().includes(searchQuery.toLowerCase())
         : true;
@@ -67,8 +70,9 @@ export default function useWorkouts({ category, searchQuery } = {}) {
     // Coloca os treinos PRO / Premium no topo da lista
     const isPro = (w) => {
       const isImpulsao = w.name?.toLowerCase().includes("impuls");
+      const isPivo = w.name?.toLowerCase().includes("piv");
       const isNeuro = w.id === 999 || w.slug === "neuro-cognition";
-      return Boolean(w.premium || isImpulsao || isNeuro);
+      return Boolean(w.premium || isImpulsao || isPivo || isNeuro);
     };
 
     const sorted = [...filtered].sort((a, b) => {
@@ -81,7 +85,6 @@ export default function useWorkouts({ category, searchQuery } = {}) {
 
     setFilteredWorkouts(sorted);
   }, [category, workouts, searchQuery]);
-
 
   return { workouts, filteredWorkouts, loading, error };
 }
