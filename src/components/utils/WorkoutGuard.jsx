@@ -22,7 +22,7 @@ export default function WorkoutGuard({ children }) {
         <div className="bg-zinc-950/80 border border-zinc-900 rounded-3xl p-8 md:p-12 max-w-md w-full text-center relative overflow-hidden backdrop-blur-xl shadow-2xl">
           {/* Top orange line */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 to-red-650" />
-          
+
           <div className="flex justify-center mb-6">
             <div className="p-4 bg-orange-500/10 rounded-full border border-orange-500/30 text-orange-500 animate-pulse">
               <Lock size={36} className="stroke-[2.5]" />
@@ -30,11 +30,12 @@ export default function WorkoutGuard({ children }) {
           </div>
 
           <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mb-3">
-            Treino <span className="text-orange-500">Restrito</span>
+            Se cadastre para <span className="text-orange-500">acessar</span>
           </h2>
 
           <p className="text-zinc-450 text-xs sm:text-sm font-medium mb-8 leading-relaxed">
-            Para acessar os treinos de neurocognição e aprimorar sua velocidade de tomada de decisão, é necessário estar conectado à sua conta Ballers085.
+            Para acessar os treinos de neurocognição, é necessário estar
+            conectado à sua conta Ballers085.
           </p>
 
           <div className="flex flex-col gap-3">
@@ -45,7 +46,7 @@ export default function WorkoutGuard({ children }) {
             >
               <LogIn size={14} /> Fazer Login / Criar Conta
             </Link>
-            
+
             <Link
               to="/workouts"
               className="w-full py-3.5 bg-zinc-900 hover:bg-zinc-800 text-white font-bold text-xs rounded-xl border border-zinc-850 transition duration-300 flex items-center justify-center gap-2 cursor-pointer"

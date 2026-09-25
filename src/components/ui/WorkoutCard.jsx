@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Clock, ChevronRight, Lock } from "lucide-react";
+import { Clock, ChevronRight, Lock, Star } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 export default function WorkoutCard({ workout }) {
@@ -62,6 +62,7 @@ export default function WorkoutCard({ workout }) {
         {/* Subtle PRO Badge */}
         {(isPremiumWorkout || isNeuro) && (
           <div className="absolute  top-3.5 left-3.5 px-2.5 py-1 bg-black/75 backdrop-blur-md rounded-md text-[10px] font-semibold text-yellow-400 border border-zinc-700/80 uppercase tracking-wider">
+            <Star size={12} className="inline-block mr-1" />
             PRO
           </div>
         )}
@@ -86,11 +87,8 @@ export default function WorkoutCard({ workout }) {
             inline-flex items-center gap-2 
             px-4 py-2 rounded-xl text-xs font-semibold
             transition-all duration-300
-            ${
-              isPremiumWorkout && !user?.premium
-                ? "bg-orange-600 group-hover:bg-orange-500 text-white group-hover:shadow-glow"
-                : "bg-zinc-900 border border-zinc-700/80 text-zinc-300 group-hover:border-zinc-500 group-hover:text-white"
-            } 
+    
+                "bg-orange-600 group-hover:bg-orange-500 bg-orange-600 text-white group-hover:shadow-glow"
           `}
         >
           {isPremiumWorkout && !user?.premium ? (

@@ -59,15 +59,19 @@ export default function Navbar() {
         w-full px-6 md:px-16 py-4
         flex items-center justify-between
         transition-all duration-300
-        ${scrolled
-          ? "bg-black/80 backdrop-blur-lg border-b border-gray-800/50 shadow-lg"
-          : "bg-transparent border-b border-transparent"
+        ${
+          scrolled
+            ? "bg-black/80 backdrop-blur-lg border-b border-gray-800/50 shadow-lg"
+            : "bg-transparent border-b border-transparent"
         }
       `}
     >
       {/* Logo + PRO badge */}
       <div className="flex items-center gap-2 sm:gap-3">
-        <Link to="/" className="tracking-wide uppercase group flex items-center gap-2">
+        <Link
+          to="/"
+          className="tracking-wide uppercase group flex items-center gap-2"
+        >
           <picture>
             <source srcSet="/logo.webp" type="image/webp" />
             <img
@@ -149,9 +153,10 @@ export default function Navbar() {
           className={`
             flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold 
             transition-all duration-300
-            ${location.pathname === "/support"
-              ? "bg-orange-600 text-white shadow-glow"
-              : "bg-orange-600/20 text-orange-400 hover:bg-orange-600/30"
+            ${
+              location.pathname === "/support"
+                ? "bg-orange-600 text-white shadow-glow"
+                : "bg-orange-600/20 text-orange-400 hover:bg-orange-600/30"
             }
           `}
         >
@@ -168,7 +173,7 @@ export default function Navbar() {
           aria-expanded={open}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
           onClick={() => setOpen((s) => !s)}
-          className="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300"
+          className="p-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300 cursor-pointer"
         >
           {!open ? <Menu className="h-6 w-6" /> : <X className="h-6 w-6" />}
         </button>
@@ -219,11 +224,12 @@ export default function Navbar() {
                   to="/premium"
                   className={`
                     flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all duration-300
-                    ${user?.premium
-                      ? "bg-amber-500/10 text-amber-400 border border-amber-500/30"
-                      : location.pathname === "/premium"
-                        ? "bg-gradient-to-r from-orange-600 to-amber-600 text-white"
-                        : "bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 border border-amber-500/20"
+                    ${
+                      user?.premium
+                        ? "bg-amber-500/10 text-amber-400 border border-amber-500/30"
+                        : location.pathname === "/premium"
+                          ? "bg-gradient-to-r from-orange-600 to-amber-600 text-white"
+                          : "bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 border border-amber-500/20"
                     }
                   `}
                 >
@@ -236,9 +242,10 @@ export default function Navbar() {
                   to="/support"
                   className={`
                     flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300
-                    ${location.pathname === "/support"
-                      ? "bg-orange-600/20 text-orange-500"
-                      : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    ${
+                      location.pathname === "/support"
+                        ? "bg-orange-600/20 text-orange-500"
+                        : "text-gray-300 hover:bg-white/5 hover:text-white"
                     }
                   `}
                 >
@@ -251,9 +258,10 @@ export default function Navbar() {
                   to="/workouts"
                   className={`
                     px-4 py-3 rounded-xl font-medium transition-all duration-300
-                    ${location.pathname === "/workouts"
-                      ? "bg-orange-600/20 text-orange-500"
-                      : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    ${
+                      location.pathname === "/workouts"
+                        ? "bg-orange-600/20 text-orange-500"
+                        : "text-gray-300 hover:bg-white/5 hover:text-white"
                     }
                   `}
                 >
@@ -264,9 +272,10 @@ export default function Navbar() {
                   to="/games"
                   className={`
                     px-4 py-3 rounded-xl font-medium transition-all duration-300
-                    ${location.pathname === "/games"
-                      ? "bg-orange-600/20 text-orange-500"
-                      : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    ${
+                      location.pathname === "/games"
+                        ? "bg-orange-600/20 text-orange-500"
+                        : "text-gray-300 hover:bg-white/5 hover:text-white"
                     }
                   `}
                 >
@@ -277,9 +286,10 @@ export default function Navbar() {
                   to="/dash"
                   className={`
                     px-4 py-3 rounded-xl font-medium transition-all duration-300
-                    ${location.pathname === "/dash"
-                      ? "bg-orange-600/20 text-orange-500"
-                      : "text-gray-300 hover:bg-white/5 hover:text-white"
+                    ${
+                      location.pathname === "/dash"
+                        ? "bg-orange-600/20 text-orange-500"
+                        : "text-gray-300 hover:bg-white/5 hover:text-white"
                     }
                   `}
                 >
@@ -293,9 +303,10 @@ export default function Navbar() {
                       to="/me"
                       className={`
                         px-4 py-3 rounded-xl font-medium transition-all duration-300
-                        ${location.pathname === "/me"
-                          ? "bg-orange-600/20 text-orange-500"
-                          : "text-gray-300 hover:bg-white/5 hover:text-white"
+                        ${
+                          location.pathname === "/me"
+                            ? "bg-orange-600/20 text-orange-500"
+                            : "text-gray-300 hover:bg-white/5 hover:text-white"
                         }
                       `}
                     >
@@ -315,8 +326,8 @@ export default function Navbar() {
                         } else {
                           alert(
                             "Para instalar o aplicativo:\n\n" +
-                            "No iOS (Safari): Toque em 'Compartilhar' e depois em 'Adicionar à Tela de Início'.\n\n" +
-                            "No Android (Chrome): Toque nos 3 pontinhos e depois em 'Adicionar à tela inicial' ou 'Instalar aplicativo'."
+                              "No iOS (Safari): Toque em 'Compartilhar' e depois em 'Adicionar à Tela de Início'.\n\n" +
+                              "No Android (Chrome): Toque nos 3 pontinhos e depois em 'Adicionar à tela inicial' ou 'Instalar aplicativo'.",
                           );
                         }
                       }}
@@ -349,8 +360,8 @@ export default function Navbar() {
                         } else {
                           alert(
                             "Para instalar o aplicativo:\n\n" +
-                            "No iOS (Safari): Toque em 'Compartilhar' e depois em 'Adicionar à Tela de Início'.\n\n" +
-                            "No Android (Chrome): Toque nos 3 pontinhos e depois em 'Adicionar à tela inicial' ou 'Instalar aplicativo'."
+                              "No iOS (Safari): Toque em 'Compartilhar' e depois em 'Adicionar à Tela de Início'.\n\n" +
+                              "No Android (Chrome): Toque nos 3 pontinhos e depois em 'Adicionar à tela inicial' ou 'Instalar aplicativo'.",
                           );
                         }
                       }}
